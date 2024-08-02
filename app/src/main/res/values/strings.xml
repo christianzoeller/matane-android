@@ -1,3 +1,7 @@
 <resources>
 	<string name="app_name">Matane</string>
+	<string name="dictionary_tab_label">Dictionary</string>
+	<string name="dictionary_tab_icon_description">Go to the dictionary</string>
+	<string name="settings_tab_label">Settings</string>
+	<string name="settings_tab_icon_description">Go to the settings</string>
 </resources>
