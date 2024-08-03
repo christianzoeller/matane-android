@@ -1,15 +1,12 @@
-package christianzoeller.matane.feature.settings.osslicenses
+package christianzoeller.matane.feature.settings.osslicenses.model
 
 import android.net.Uri
-import com.mikepenz.aboutlibraries.Libs
+import christianzoeller.matane.data.settings.model.OssLicenseInfo
 import com.mikepenz.aboutlibraries.entity.Developer
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.entity.License
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
-
-// TODO move somewhere else
-typealias OssLicenseInfo = Libs
 
 object OssLicenseInfoMocks {
     val library = Library(

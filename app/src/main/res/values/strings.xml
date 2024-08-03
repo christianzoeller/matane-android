@@ -4,4 +4,9 @@
 	<string name="dictionary_tab_icon_description">Go to the dictionary</string>
 	<string name="settings_tab_label">Settings</string>
 	<string name="settings_tab_icon_description">Go to the settings</string>
+	<string name="oss_licenses_detail_license_header">License</string>
+	<string name="oss_licenses_header">Open source libraries</string>
+	<string name="oss_licenses_error_disclaimer">An unexpected error occurred.</string>
+	<string name="oss_licenses_list_list_item_icon_description">Go to details about license of %1$s</string>
+	<string name="oss_licenses_detail_empty_disclaimer">Select one of the open source libraries in the list to find out more about it.</string>
 </resources>

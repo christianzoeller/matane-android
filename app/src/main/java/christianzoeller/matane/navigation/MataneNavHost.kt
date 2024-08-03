@@ -1,6 +1,7 @@
 package christianzoeller.matane.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -8,6 +9,7 @@ import christianzoeller.matane.MataneAppState
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
 import christianzoeller.matane.feature.settings.SettingsScreen
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesScreen
+import christianzoeller.matane.feature.settings.osslicenses.OssLicensesViewModel
 
 @Composable
 fun MataneNavHost(
@@ -35,7 +37,9 @@ fun MataneNavHost(
             }
 
             composable<Destination.OssLicenses> {
-                OssLicensesScreen()
+                val viewModel = hiltViewModel<OssLicensesViewModel>()
+
+                OssLicensesScreen(viewModel)
             }
         }
     }

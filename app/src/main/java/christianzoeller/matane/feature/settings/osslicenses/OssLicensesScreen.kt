@@ -1,117 +1,126 @@
 package christianzoeller.matane.feature.settings.osslicenses
 
-import android.os.Parcelable
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ListItem
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.parcelize.Parcelize
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import christianzoeller.matane.R
+import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
+import christianzoeller.matane.feature.settings.osslicenses.ui.OssLicensesView
+import christianzoeller.matane.ui.theme.MataneTheme
+import christianzoeller.matane.ui.tooling.CompactPreview
 
-@Parcelize
-data class LibraryOverview(
-    val libraryName: String,
-    val libraryId: String,
-    val licenses: List<String>
-) : Parcelable
-
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun OssLicensesScreen() {
-    val navigator = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
+fun OssLicensesScreen(viewModel: OssLicensesViewModel) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    BackHandler(navigator.canNavigateBack()) {
-        navigator.navigateBack()
-    }
-
-    Scaffold { contentPadding ->
-        ListDetailPaneScaffold(
-            directive = navigator.scaffoldDirective,
-            value = navigator.scaffoldValue,
-            listPane = {
-                AnimatedPane {
-                    OssLicensesList(
-                        onLibraryClick = { license ->
-                            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, license)
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            },
-            detailPane = {
-                AnimatedPane {
-                    when (val library = navigator.currentDestination?.content) {
-                        null -> OssLicenseDetailEmpty(modifier = Modifier.fillMaxSize())
-                        else -> OssLicenseDetail(
-                            selectedLibrary = library,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-            },
-            modifier = Modifier.padding(contentPadding)
-        )
-    }
+    OssLicensesScreen(
+        state = state,
+        onLibraryClick = viewModel::onLibraryClick
+    )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun OssLicensesList(
-    onLibraryClick: (LibraryOverview) -> Unit,
-    modifier: Modifier = Modifier
+private fun OssLicensesScreen(
+    state: OssLicensesState,
+    onLibraryClick: (LibraryOverview) -> Unit
 ) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        OssLicenseInfoMocks.info.libraries.forEach { library ->
-            ListItem(
-                headlineContent = { Text(library.name) },
-                modifier = Modifier.clickable {
-                    onLibraryClick(
-                        LibraryOverview(
-                            libraryName = library.name,
-                            libraryId = library.uniqueId,
-                            licenses = library.licenses.map { it.name }
-                        )
-                    )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.oss_licenses_header))
                 }
             )
+        }
+    ) { contentPadding ->
+        when (state) {
+            OssLicensesState.Loading -> LoadingView(contentPadding)
+
+            is OssLicensesState.Data -> OssLicensesView(
+                data = state,
+                onLibraryClick = onLibraryClick,
+                contentPadding = contentPadding
+            )
+
+            OssLicensesState.Error -> ErrorView(contentPadding)
         }
     }
 }
 
 @Composable
-private fun OssLicenseDetail(
-    selectedLibrary: LibraryOverview,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+private fun LoadingView(contentPadding: PaddingValues) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+        contentAlignment = Alignment.Center
     ) {
-        Text(text = selectedLibrary.libraryName)
-        Text(text = selectedLibrary.licenses.joinToString())
+        CircularProgressIndicator(modifier = Modifier.size(64.dp))
     }
 }
 
 @Composable
-private fun OssLicenseDetailEmpty(modifier: Modifier = Modifier) {
+private fun ErrorView(contentPadding: PaddingValues) {
     Box(
-        modifier = modifier,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding),
         contentAlignment = Alignment.Center
     ) {
-        Text("Nothing selected")
+        Text(
+            text = stringResource(id = R.string.oss_licenses_error_disclaimer),
+            textAlign = TextAlign.Center,
+            style = typography.titleMedium
+        )
     }
+}
+
+@CompactPreview
+@Composable
+private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
+    OssLicensesScreen(
+        state = OssLicensesState.Loading,
+        onLibraryClick = {}
+    )
+}
+
+@CompactPreview
+@Composable
+private fun OssLicensesScreen_Content_Preview() = MataneTheme {
+    OssLicensesScreen(
+        state = OssLicensesState.Data(
+            overviewData = OssLicensesState.Data.Overview(OssLicenseInfoMocks.info),
+            detailData = OssLicensesState.Data.Detail(
+                library = OssLicenseInfoMocks.library,
+                licenses = listOf(OssLicenseInfoMocks.license)
+            )
+        ),
+        onLibraryClick = {}
+    )
+}
+
+@CompactPreview
+@Composable
+private fun OssLicensesScreen_Error_Preview() = MataneTheme {
+    OssLicensesScreen(
+        state = OssLicensesState.Error,
+        onLibraryClick = {}
+    )
 }
