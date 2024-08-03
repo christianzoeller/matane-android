@@ -9,10 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import christianzoeller.matane.feature.dictionary.search.SearchScreen
-import christianzoeller.matane.feature.settings.SettingsScreen
+import christianzoeller.matane.navigation.MataneNavHost
 import christianzoeller.matane.navigation.TopLevelDestination
 
 @Composable
@@ -40,18 +37,9 @@ fun MataneApp(
         },
         modifier = modifier
     ) {
-        NavHost(
-            navController = appState.navController,
-            startDestination = TopLevelDestination.Dictionary.name
-        ) {
-            composable(TopLevelDestination.Dictionary.name) {
-                SearchScreen()
-            }
-
-            composable(TopLevelDestination.Settings.name) {
-                SettingsScreen()
-            }
-        }
+        MataneNavHost(
+            appState = appState
+        )
     }
 }
 
