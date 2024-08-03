@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import christianzoeller.matane.navigation.MataneNavHost
 import christianzoeller.matane.navigation.TopLevelDestination
@@ -46,5 +47,5 @@ fun MataneApp(
 private fun NavDestination.isTopLevelDestinationInHierarchy(
     topLevelDestination: TopLevelDestination
 ) = hierarchy.any { destination ->
-    destination.route?.contains(topLevelDestination.name, true) ?: false
+    destination.hasRoute(topLevelDestination::class)
 }

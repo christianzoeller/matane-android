@@ -36,7 +36,10 @@ class MataneAppState(
             .value?.destination
 
     val topLevelDestinations: List<TopLevelDestination>
-        get() = TopLevelDestination.entries
+        get() = listOf(
+            TopLevelDestination.Dictionary,
+            TopLevelDestination.Settings
+        )
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
         val topLevelNavOptions = navOptions {
@@ -54,7 +57,7 @@ class MataneAppState(
         }
 
         navController.navigate(
-            route = topLevelDestination.name,
+            route = topLevelDestination,
             navOptions = topLevelNavOptions
         )
     }

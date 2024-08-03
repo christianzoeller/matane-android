@@ -3,6 +3,7 @@ package christianzoeller.matane.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import christianzoeller.matane.MataneAppState
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
 import christianzoeller.matane.feature.settings.SettingsScreen
@@ -14,20 +15,28 @@ fun MataneNavHost(
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = TopLevelDestination.Dictionary.name
+        startDestination = TopLevelDestination.Dictionary
     ) {
-        composable(TopLevelDestination.Dictionary.name) {
-            SearchScreen()
+        navigation<TopLevelDestination.Dictionary>(
+            startDestination = Destination.Search
+        ) {
+            composable<Destination.Search> {
+                SearchScreen()
+            }
         }
 
-        composable(TopLevelDestination.Settings.name) {
-            SettingsScreen(
-                onOssLicenseClick = { appState.navigate(Destination.OssLicenses) }
-            )
-        }
+        navigation<TopLevelDestination.Settings>(
+            startDestination = Destination.Settings
+        ) {
+            composable<Destination.Settings> {
+                SettingsScreen(
+                    onOssLicenseClick = { appState.navigate(Destination.OssLicenses) }
+                )
+            }
 
-        composable<Destination.OssLicenses> {
-            OssLicensesScreen()
+            composable<Destination.OssLicenses> {
+                OssLicensesScreen()
+            }
         }
     }
 }
