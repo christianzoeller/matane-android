@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.about.libraries)
     alias(libs.plugins.android.application)
@@ -9,6 +12,11 @@ plugins {
     alias(libs.plugins.ksp)
     id("kotlin-kapt")
 }
+
+val keystorePropertiesFile = rootProject.file("release-keystore.properties")
+val keystoreProperties = Properties()
+
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "christianzoeller.matane"
@@ -27,8 +35,18 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release-config") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release-config")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
