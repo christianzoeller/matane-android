@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,12 +27,16 @@ import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
 @Composable
-fun OssLicensesScreen(viewModel: OssLicensesViewModel) {
+fun OssLicensesScreen(
+    viewModel: OssLicensesViewModel,
+    onNavigateUp: () -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     OssLicensesScreen(
         state = state,
-        onLibraryClick = viewModel::onLibraryClick
+        onLibraryClick = viewModel::onLibraryClick,
+        onNavigateUp = onNavigateUp
     )
 }
 
@@ -36,13 +44,22 @@ fun OssLicensesScreen(viewModel: OssLicensesViewModel) {
 @Composable
 private fun OssLicensesScreen(
     state: OssLicensesState,
-    onLibraryClick: (LibraryOverview) -> Unit
+    onLibraryClick: (LibraryOverview) -> Unit,
+    onNavigateUp: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(text = stringResource(id = R.string.oss_licenses_header))
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateUp) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(id = R.string.global_navigate_up_icon_description)
+                        )
+                    }
                 }
             )
         }
@@ -80,7 +97,8 @@ private fun ErrorView(contentPadding: PaddingValues) {
 private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
     OssLicensesScreen(
         state = OssLicensesState.Loading,
-        onLibraryClick = {}
+        onLibraryClick = {},
+        onNavigateUp = {}
     )
 }
 
@@ -95,7 +113,8 @@ private fun OssLicensesScreen_Content_Preview() = MataneTheme {
                 licenses = listOf(OssLicenseInfoMocks.license)
             )
         ),
-        onLibraryClick = {}
+        onLibraryClick = {},
+        onNavigateUp = {}
     )
 }
 
@@ -104,6 +123,7 @@ private fun OssLicensesScreen_Content_Preview() = MataneTheme {
 private fun OssLicensesScreen_Error_Preview() = MataneTheme {
     OssLicensesScreen(
         state = OssLicensesState.Error,
-        onLibraryClick = {}
+        onLibraryClick = {},
+        onNavigateUp = {}
     )
 }

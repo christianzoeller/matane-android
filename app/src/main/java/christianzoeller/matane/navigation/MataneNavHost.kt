@@ -39,7 +39,10 @@ fun MataneNavHost(
             composable<Destination.OssLicenses> {
                 val viewModel = hiltViewModel<OssLicensesViewModel>()
 
-                OssLicensesScreen(viewModel)
+                OssLicensesScreen(
+                    viewModel = viewModel,
+                    onNavigateUp = { appState.navigateUp() }
+                )
             }
         }
     }

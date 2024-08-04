@@ -72,4 +72,6 @@ class MataneAppState(
             navOptions = navOptions
         )
     }
+
+    fun navigateUp() = navController.navigateUp()
 }
