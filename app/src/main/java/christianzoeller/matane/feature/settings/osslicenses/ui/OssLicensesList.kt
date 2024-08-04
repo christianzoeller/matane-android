@@ -15,12 +15,14 @@ import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.LibraryOverview
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
+import christianzoeller.matane.styleguide.modifiers.placeholder
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
 @Composable
 fun OssLicensesList(
-    data: OssLicensesState.Data.Overview,
+    data: OssLicensesState.Content.Overview,
+    isLoading: Boolean,
     onLibraryClick: (LibraryOverview) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -30,8 +32,14 @@ fun OssLicensesList(
             key = { it.uniqueId }
         ) { library ->
             ListItem(
-                headlineContent = { Text(text = library.name) },
+                headlineContent = {
+                    Text(
+                        text = library.name,
+                        modifier = Modifier.placeholder(visible = isLoading)
+                    )
+                },
                 modifier = Modifier.clickable(
+                    enabled = !isLoading,
                     onClick = {
                         onLibraryClick(
                             LibraryOverview(
@@ -48,7 +56,8 @@ fun OssLicensesList(
                         contentDescription = stringResource(
                             id = R.string.oss_licenses_list_list_item_icon_description,
                             library.name
-                        )
+                        ),
+                        modifier = Modifier.placeholder(visible = isLoading)
                     )
                 }
             )
@@ -58,9 +67,21 @@ fun OssLicensesList(
 
 @CompactPreview
 @Composable
-private fun OssLicensesList_Preview() = MataneTheme {
+private fun OssLicensesList_Loading_Preview() = MataneTheme {
     OssLicensesList(
-        data = OssLicensesState.Data.Overview(OssLicenseInfoMocks.info),
+        data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        isLoading = true,
         onLibraryClick = {}
     )
 }
+
+@CompactPreview
+@Composable
+private fun OssLicensesList_Content_Preview() = MataneTheme {
+    OssLicensesList(
+        data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        isLoading = false,
+        onLibraryClick = {}
+    )
+}
+

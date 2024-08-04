@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
@@ -17,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
@@ -51,9 +48,7 @@ private fun OssLicensesScreen(
         }
     ) { contentPadding ->
         when (state) {
-            OssLicensesState.Loading -> LoadingView(contentPadding)
-
-            is OssLicensesState.Data -> OssLicensesView(
+            is OssLicensesState.Content -> OssLicensesView(
                 data = state,
                 onLibraryClick = onLibraryClick,
                 contentPadding = contentPadding
@@ -61,18 +56,6 @@ private fun OssLicensesScreen(
 
             OssLicensesState.Error -> ErrorView(contentPadding)
         }
-    }
-}
-
-@Composable
-private fun LoadingView(contentPadding: PaddingValues) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(modifier = Modifier.size(64.dp))
     }
 }
 
@@ -106,8 +89,8 @@ private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
 private fun OssLicensesScreen_Content_Preview() = MataneTheme {
     OssLicensesScreen(
         state = OssLicensesState.Data(
-            overviewData = OssLicensesState.Data.Overview(OssLicenseInfoMocks.info),
-            detailData = OssLicensesState.Data.Detail(
+            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+            detailData = OssLicensesState.Content.Detail(
                 library = OssLicenseInfoMocks.library,
                 licenses = listOf(OssLicenseInfoMocks.license)
             )

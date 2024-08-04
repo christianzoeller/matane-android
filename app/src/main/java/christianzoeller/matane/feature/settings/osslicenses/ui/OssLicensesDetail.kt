@@ -28,7 +28,7 @@ import com.mikepenz.aboutlibraries.entity.License
 
 @Composable
 fun OssLicensesDetail(
-    data: OssLicensesState.Data.Detail,
+    data: OssLicensesState.Content.Detail,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -152,7 +152,7 @@ private fun TextLink(
 @Composable
 private fun OssLicensesDetail_Preview() = MataneTheme {
     OssLicensesDetail(
-        data = OssLicensesState.Data.Detail(
+        data = OssLicensesState.Content.Detail(
             library = OssLicenseInfoMocks.library,
             licenses = listOf(OssLicenseInfoMocks.license)
         ),

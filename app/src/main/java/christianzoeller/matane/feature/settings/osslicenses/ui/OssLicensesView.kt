@@ -25,7 +25,7 @@ import christianzoeller.matane.ui.tooling.MediumPreview
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun OssLicensesView(
-    data: OssLicensesState.Data,
+    data: OssLicensesState.Content,
     onLibraryClick: (LibraryOverview) -> Unit,
     contentPadding: PaddingValues
 ) {
@@ -42,6 +42,7 @@ fun OssLicensesView(
             AnimatedPane {
                 OssLicensesList(
                     data = data.overviewData,
+                    isLoading = data is OssLicensesState.Loading,
                     onLibraryClick = { library ->
                         onLibraryClick(library)
                         navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
@@ -56,13 +57,17 @@ fun OssLicensesView(
                 .padding(horizontal = 24.dp, vertical = 16.dp)
 
             AnimatedPane {
-                when {
-                    data.loadDetailError -> OssLicensesDetailEmpty(contentModifier)
+                when(data) {
+                    is OssLicensesState.Loading -> OssLicensesDetailEmpty(contentModifier)
 
-                    data.detailData != null -> OssLicensesDetail(
-                        data = data.detailData,
-                        modifier = contentModifier
-                    )
+                    is OssLicensesState.Data -> when {
+                        data.loadDetailError -> OssLicensesDetailEmpty(contentModifier)
+
+                        data.detailData != null -> OssLicensesDetail(
+                            data = data.detailData!!,
+                            modifier = contentModifier
+                        )
+                    }
                 }
             }
         },
@@ -74,11 +79,23 @@ fun OssLicensesView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesView_Preview() = MataneTheme {
+private fun OssLicensesView_Loading_Preview() = MataneTheme {
+    OssLicensesView(
+        data = OssLicensesState.Loading,
+        onLibraryClick = {},
+        contentPadding = PaddingValues()
+    )
+}
+
+@ExpandedPreview
+@MediumPreview
+@CompactPreview
+@Composable
+private fun OssLicensesView_Content_Preview() = MataneTheme {
     OssLicensesView(
         data = OssLicensesState.Data(
-            overviewData = OssLicensesState.Data.Overview(OssLicenseInfoMocks.info),
-            detailData = OssLicensesState.Data.Detail(
+            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+            detailData = OssLicensesState.Content.Detail(
                 library = OssLicenseInfoMocks.library,
                 licenses = listOf(OssLicenseInfoMocks.license)
             ),
@@ -95,7 +112,7 @@ private fun OssLicensesView_Preview() = MataneTheme {
 private fun OssLicensesView_Error_Preview() = MataneTheme {
     OssLicensesView(
         data = OssLicensesState.Data(
-            overviewData = OssLicensesState.Data.Overview(OssLicenseInfoMocks.info),
+            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
             detailData = null,
             loadDetailError = true
         ),
