@@ -13,6 +13,8 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
-import christianzoeller.matane.feature.settings.osslicenses.ui.OssLicensesView
+import christianzoeller.matane.feature.settings.osslicenses.ui.OssLicensesListDetailView
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
@@ -40,13 +42,15 @@ fun OssLicensesScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 private fun OssLicensesScreen(
     state: OssLicensesState,
     onLibraryClick: (LibraryOverview) -> Unit,
     onNavigateUp: () -> Unit,
 ) {
+    val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -54,7 +58,15 @@ private fun OssLicensesScreen(
                     Text(text = stringResource(id = R.string.oss_licenses_header))
                 },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateUp) {
+                    IconButton(
+                        onClick = {
+                            if (listDetailNavigator.canNavigateBack()) {
+                                listDetailNavigator.navigateBack()
+                            } else {
+                                onNavigateUp()
+                            }
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = stringResource(id = R.string.global_navigate_up_icon_description)
@@ -65,10 +77,11 @@ private fun OssLicensesScreen(
         }
     ) { contentPadding ->
         when (state) {
-            is OssLicensesState.Content -> OssLicensesView(
+            is OssLicensesState.Content -> OssLicensesListDetailView(
                 data = state,
                 onLibraryClick = onLibraryClick,
-                contentPadding = contentPadding
+                contentPadding = contentPadding,
+                listDetailNavigator = listDetailNavigator
             )
 
             OssLicensesState.Error -> ErrorView(contentPadding)

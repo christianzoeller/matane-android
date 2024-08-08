@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 package christianzoeller.matane.feature.settings.osslicenses.ui
 
 import androidx.activity.compose.BackHandler
@@ -10,6 +12,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,22 +25,20 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun OssLicensesView(
+fun OssLicensesListDetailView(
     data: OssLicensesState.Content,
     onLibraryClick: (LibraryOverview) -> Unit,
-    contentPadding: PaddingValues
+    contentPadding: PaddingValues,
+    listDetailNavigator: ThreePaneScaffoldNavigator<LibraryOverview> = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
 ) {
-    val navigator = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
-
-    BackHandler(navigator.canNavigateBack()) {
-        navigator.navigateBack()
+    BackHandler(listDetailNavigator.canNavigateBack()) {
+        listDetailNavigator.navigateBack()
     }
 
     ListDetailPaneScaffold(
-        directive = navigator.scaffoldDirective,
-        value = navigator.scaffoldValue,
+        directive = listDetailNavigator.scaffoldDirective,
+        value = listDetailNavigator.scaffoldValue,
         listPane = {
             AnimatedPane {
                 OssLicensesList(
@@ -45,7 +46,7 @@ fun OssLicensesView(
                     isLoading = data is OssLicensesState.Loading,
                     onLibraryClick = { library ->
                         onLibraryClick(library)
-                        navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
+                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
                     }
                 )
             }
@@ -79,8 +80,8 @@ fun OssLicensesView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesView_Loading_Preview() = MataneTheme {
-    OssLicensesView(
+private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
+    OssLicensesListDetailView(
         data = OssLicensesState.Loading,
         onLibraryClick = {},
         contentPadding = PaddingValues()
@@ -91,8 +92,8 @@ private fun OssLicensesView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesView_Content_Preview() = MataneTheme {
-    OssLicensesView(
+private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
+    OssLicensesListDetailView(
         data = OssLicensesState.Data(
             overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
             detailData = OssLicensesState.Content.Detail(
@@ -109,8 +110,8 @@ private fun OssLicensesView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesView_Error_Preview() = MataneTheme {
-    OssLicensesView(
+private fun OssLicensesListDetailView_Error_Preview() = MataneTheme {
+    OssLicensesListDetailView(
         data = OssLicensesState.Data(
             overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
             detailData = null,
