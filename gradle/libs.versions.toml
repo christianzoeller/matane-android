@@ -1,9 +1,9 @@
 [versions]
 aboutLibraries = "11.2.2"
 activityCompose = "1.9.1"
-agp = "8.4.1"
+agp = "8.4.2"
 coreKtx = "1.13.1"
-composeBom = "2023.08.00"
+composeBom = "2024.06.00"
 datastore = "1.1.1"
 espressoCore = "3.6.1"
 hilt = "2.49"
