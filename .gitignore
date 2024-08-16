@@ -14,5 +14,6 @@ local.properties
 
 fastlane/report.xml
 
+/app/google-services.json
 release-keystore.jks
 release-keystore.properties
