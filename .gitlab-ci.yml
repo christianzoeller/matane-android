@@ -23,9 +23,9 @@ test:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './'
   script:
-    - mv ./google-services.json ./app/google-services.json
     - apt update -y && apt install -y curl
     - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - mv ./google-services.json ./app/google-services.json
     - bundle exec fastlane test
   artifacts:
     when: always
@@ -44,9 +44,9 @@ build:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './'
   script:
-    - mv ./google-services.json ./app/google-services.json
     - apt update -y && apt install -y curl
     - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - mv ./google-services.json ./app/google-services.json
     - bundle exec fastlane build
   artifacts:
     when: on_success
