@@ -12,5 +12,7 @@
 .cxx
 local.properties
 
+fastlane/report.xml
+
 release-keystore.jks
 release-keystore.properties

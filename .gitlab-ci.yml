@@ -1,0 +1,54 @@
+stages:
+  - build
+  - test
+
+cache:
+  key:
+    files:
+      - Gemfile.lock
+  paths:
+    - vendor/bundle
+
+before_script:
+  - bundle check --path vendor/bundle || bundle install --path vendor/bundle --jobs $(nproc)
+
+test:
+  image: fabernovel/android:api-34-v1.8.0
+  stage: test
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == 'true' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: on_success
+    - when: manual
+      allow_failure: true
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: './'
+  script:
+    - apt update -y && apt install -y curl
+    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - bundle exec fastlane test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - '*/build/test-results/testDebugUnitTest/TEST-*.xml'
+
+build:
+  image: fabernovel/android:api-34-v1.8.0
+  stage: build
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == 'true' || $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: always
+    - when: manual
+      allow_failure: true
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: './'
+  script:
+    - apt update -y && apt install -y curl
+    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - bundle exec fastlane build
+  artifacts:
+    when: on_success
+    expire_in: 4 weeks
+    paths:
+      - app/build/outputs/apk/release/app-release.apk
+
