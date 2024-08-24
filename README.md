@@ -1,6 +1,26 @@
 # Matane
 
-Matane is an app for learning Japanese.
+Matane is an app for learning Japanese. It is currently at a very early stage and does not offer
+a lot of functionality yet.
+
+Please consider the [issues](https://gitlab.com/christianzoeller/matane-android/-/issues) and
+[milestones](https://gitlab.com/christianzoeller/matane-android/-/milestones) to find out more
+about the project status.
+
+## Building
+
+This project is configured to automatically create signed release builds. The files containing
+the secrets necessary for signing the builds are added to the repository as
+[secure files](https://docs.gitlab.com/ee/ci/secure_files/). Therefore, simply checking out the
+repository and attempting to build it will result in a failed Gradle sync.
+
+Moreover, the app makes use of [Firebase](https://firebase.google.com/). In order to connect a
+Firebase project to an app, a *google-services.json* file is needed in the root directory of
+the app's ```app``` module. This file is also included as a secure file and attempting to build
+the project without it will fail as well.
+
+Due to this, in case you wish to build the app yourself, please contact me to request Developer role
+for this repository, allowing you to download secure files.
 
 ## Open Source Libraries
 
