@@ -7,6 +7,9 @@ sealed interface Destination {
     data object Search : Destination
 
     @Serializable
+    data object Kanji : Destination
+
+    @Serializable
     data object Settings : Destination
 
     @Serializable
