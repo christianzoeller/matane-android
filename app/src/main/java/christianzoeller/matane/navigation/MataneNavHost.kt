@@ -10,6 +10,7 @@ import christianzoeller.matane.feature.dictionary.kanji.KanjiScreen
 import christianzoeller.matane.feature.dictionary.kanji.KanjiViewModel
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
 import christianzoeller.matane.feature.settings.SettingsScreen
+import christianzoeller.matane.feature.settings.acknowledgements.AcknowledgementsScreen
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesScreen
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesViewModel
 
@@ -45,7 +46,14 @@ fun MataneNavHost(
         ) {
             composable<Destination.Settings> {
                 SettingsScreen(
+                    onAcknowledgementsClick = { appState.navigate(Destination.Acknowledgements) },
                     onOssLicenseClick = { appState.navigate(Destination.OssLicenses) }
+                )
+            }
+
+            composable<Destination.Acknowledgements> {
+                AcknowledgementsScreen(
+                    onNavigateUp = { appState.navigateUp() }
                 )
             }
 

@@ -4,15 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
@@ -27,6 +21,7 @@ import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMock
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiListDetailView
+import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
@@ -46,7 +41,7 @@ fun KanjiScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 private fun KanjiScreen(
     overviewState: KanjiOverviewState,
@@ -58,26 +53,16 @@ private fun KanjiScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.kanji_header))
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            if (listDetailNavigator.canNavigateBack()) {
-                                listDetailNavigator.navigateBack()
-                            } else {
-                                onNavigateUp()
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.global_navigate_up_icon_description)
-                        )
+            DefaultTopAppBar(
+                onNavigateUp = {
+                    if (listDetailNavigator.canNavigateBack()) {
+                        listDetailNavigator.navigateBack()
+                    } else {
+                        onNavigateUp()
+
                     }
-                }
+                },
+                title = R.string.kanji_header
             )
         }
     ) { contentPadding ->

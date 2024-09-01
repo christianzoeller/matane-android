@@ -20,4 +20,20 @@
 	<string name="kanji_detail_radical_section_info_icon_description">Display information about what these parts are</string>
 	<string name="kanji_detail_radical_section_radical_explanation">The symbols shown here are common parts that can be found in a lot of kanji. These parts are called \"radicals\" and can be thought of as building blocks for kanji. Some radicals are kanji, too, for example 一 or 口.</string>
 	<string name="kanji_detail_radical_section_radical_explanation_header">What are parts?</string>
+	<string name="settings_header">Settings</string>
+	<string name="settings_about_the_app_section_header">About the app</string>
+	<string name="settings_about_the_app_section_oss_licenses">Open source libraries</string>
+	<string name="settings_about_the_app_section_acknowledgements">Acknowledgements</string>
+	<string name="acknowledgements_header">Acknowledgements</string>
+	<string name="settings_about_the_app_section_oss_libraries_icon_description">Go to a list of open source software libraries used within the app</string>
+	<string name="settings_about_the_app_section_acknowledgements_icon_description">Go to a list of projects this app makes use of</string>
+	<string name="acknowledgments_intro">Matane is built on top of several open source projects aimed at making information on the Japanese language freely available. Without their work, the project would not be possible.</string>
+	<string name="acknowledgements_kanjidic_header">KANJIDIC</string>
+	<string name="acknowledgements_kradfile_header">RADKFILE / KRADFILE</string>
+	<string name="acknowledgements_kanjidic_text">Kanji data is imported from the KANJIDIC project. The KANJDIC project began in 1991 by Jim Breen and is now maintained by the Electronic Dictionary Research and Development Group (EDRDG).</string>
+	<string name="acknowledgements_kradfile_text">Data on radicals is imported from the RADKFILE / KRADFILE project. This project was also started by Jim Breen and is now maintained by the EDRDG.</string>
+	<string name="acknowledgements_kanjidic_link_label">About the KANJIDIC project</string>
+	<string name="acknowledgements_kradfile_link_label">About the RADKFILE / KRADFILE project</string>
+	<string name="acknowledgements_kanjidic_link_url">http://www.edrdg.org/wiki/index.php/KANJIDIC_Project</string>
+	<string name="acknowledgements_kradfile_link_url">https://www.edrdg.org/krad/kradinf.html</string>
 </resources>

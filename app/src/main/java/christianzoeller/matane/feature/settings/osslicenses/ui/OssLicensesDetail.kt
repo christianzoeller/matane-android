@@ -1,26 +1,19 @@
 package christianzoeller.matane.feature.settings.osslicenses.ui
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
+import christianzoeller.matane.styleguide.components.TextLink
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import com.mikepenz.aboutlibraries.entity.Library
@@ -46,7 +39,7 @@ fun OssLicensesDetail(
 private fun LibrarySectionHeader(library: Library) {
     Text(
         text = library.name,
-        style = MaterialTheme.typography.headlineMedium
+        style = typography.headlineMedium
     )
 
     when {
@@ -56,7 +49,7 @@ private fun LibrarySectionHeader(library: Library) {
             when (val url = library.organization!!.url) {
                 null -> Text(
                     text = library.organization!!.name,
-                    style = MaterialTheme.typography.bodySmall
+                    style = typography.bodySmall
                 )
 
                 else -> TextLink(
@@ -75,7 +68,7 @@ private fun LibrarySectionHeader(library: Library) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = it,
-                        style = MaterialTheme.typography.bodySmall
+                        style = typography.bodySmall
                     )
                 }
         }
@@ -98,7 +91,7 @@ private fun LibrarySection(library: Library) {
 private fun LicenseSectionHeader() {
     Text(
         text = stringResource(id = R.string.oss_licenses_detail_license_header),
-        style = MaterialTheme.typography.titleLarge
+        style = typography.titleLarge
     )
 }
 
@@ -111,7 +104,7 @@ private fun LicenseSection(licenses: List<License>) {
 
         Text(
             text = license.name,
-            style = MaterialTheme.typography.titleMedium
+            style = typography.titleMedium
         )
 
         license.url?.let {
@@ -119,7 +112,7 @@ private fun LicenseSection(licenses: List<License>) {
             TextLink(
                 text = it,
                 url = it,
-                style = MaterialTheme.typography.bodySmall
+                style = typography.bodySmall
             )
         }
 
@@ -128,24 +121,6 @@ private fun LicenseSection(licenses: List<License>) {
             Text(text = it)
         }
     }
-}
-
-@Composable
-private fun TextLink(
-    text: String,
-    url: String,
-    style: TextStyle = MaterialTheme.typography.bodyMedium
-) {
-    val context = LocalContext.current
-
-    Text(
-        text = text,
-        modifier = Modifier.clickable {
-            context.openInExternalBrowser(url)
-        },
-        textDecoration = TextDecoration.Underline,
-        style = style
-    )
 }
 
 @CompactPreview
@@ -158,13 +133,4 @@ private fun OssLicensesDetail_Preview() = MataneTheme {
         ),
         modifier = Modifier.padding(16.dp)
     )
-}
-
-private fun Context.openInExternalBrowser(link: String) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-    try {
-        startActivity(browserIntent)
-    } catch (e: Exception) {
-        Log.e("Matane", "Failed to open external link $link: $e")
-    }
 }
