@@ -13,5 +13,8 @@ sealed interface Destination {
     data object Settings : Destination
 
     @Serializable
+    data object Acknowledgements : Destination
+
+    @Serializable
     data object OssLicenses : Destination
 }

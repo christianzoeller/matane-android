@@ -33,3 +33,19 @@ changing a dependency:
 ```
 app:exportLibraryDefinitions
 ```
+
+## Acknowledgements
+
+Matane is built on top of several open source projects aimed at making information on the Japanese
+language freely available. Without their work, the project would not be possible.
+
+### KANJIDIC
+
+Kanji data is imported from the [KANJIDIC project](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project).
+The KANJDIC project began in 1991 by Jim Breen and is now maintained by the Electronic Dictionary Research
+and Development Group ([EDRDG](http://www.edrdg.org/wiki/index.php/Main_Page)).
+
+### RADKFILE / KRADFILE
+
+Data on radicals is imported from the [RADKFILE / KRADFILE project](https://www.edrdg.org/krad/kradinf.html).
+This project was also started by Jim Breen and is now maintained by the EDRDG.
