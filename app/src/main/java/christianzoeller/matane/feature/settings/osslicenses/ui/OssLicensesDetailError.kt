@@ -1,4 +1,4 @@
-package christianzoeller.matane.feature.dictionary.kanji.ui
+package christianzoeller.matane.feature.settings.osslicenses.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -15,13 +15,13 @@ import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
 @Composable
-fun KanjiDetailError(modifier: Modifier = Modifier) {
+fun OssLicensesDetailError(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = R.string.kanji_error_disclaimer),
+            text = stringResource(id = R.string.oss_licenses_error_disclaimer),
             textAlign = TextAlign.Center,
             style = typography.titleMedium
         )
@@ -30,8 +30,8 @@ fun KanjiDetailError(modifier: Modifier = Modifier) {
 
 @CompactPreview
 @Composable
-private fun KanjiDetailError_Preview() = MataneTheme {
-    KanjiDetailError(
+private fun OssLicensesDetailError_Preview() = MataneTheme {
+    OssLicensesDetailError(
         modifier = Modifier.padding(16.dp)
     )
 }

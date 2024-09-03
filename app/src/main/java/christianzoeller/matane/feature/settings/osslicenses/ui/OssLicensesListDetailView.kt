@@ -19,7 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.feature.settings.osslicenses.LibraryOverview
-import christianzoeller.matane.feature.settings.osslicenses.OssLicensesState
+import christianzoeller.matane.feature.settings.osslicenses.OssLicensesDetailState
+import christianzoeller.matane.feature.settings.osslicenses.OssLicensesOverviewState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -28,7 +29,8 @@ import christianzoeller.matane.ui.tooling.MediumPreview
 
 @Composable
 fun OssLicensesListDetailView(
-    data: OssLicensesState.Content,
+    overviewData: OssLicensesOverviewState.Content,
+    detailState: OssLicensesDetailState,
     onLibraryClick: (LibraryOverview) -> Unit,
     contentPadding: PaddingValues,
     listDetailNavigator: ThreePaneScaffoldNavigator<LibraryOverview> = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
@@ -44,9 +46,9 @@ fun OssLicensesListDetailView(
         listPane = {
             AnimatedPane {
                 OssLicensesList(
-                    data = data.overviewData,
+                    data = overviewData,
                     listState = listState,
-                    isLoading = data is OssLicensesState.Loading,
+                    isLoading = overviewData is OssLicensesOverviewState.Loading,
                     onLibraryClick = { library ->
                         onLibraryClick(library)
                         listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
@@ -61,17 +63,15 @@ fun OssLicensesListDetailView(
                 .padding(horizontal = 24.dp, vertical = 16.dp)
 
             AnimatedPane {
-                when(data) {
-                    is OssLicensesState.Loading -> OssLicensesDetailEmpty(contentModifier)
+                when (detailState) {
+                    is OssLicensesDetailState.NoSelection -> OssLicensesDetailEmpty(contentModifier)
 
-                    is OssLicensesState.Data -> when {
-                        data.loadDetailError -> OssLicensesDetailEmpty(contentModifier)
+                    is OssLicensesDetailState.Content -> OssLicensesDetail(
+                        data = detailState,
+                        modifier = contentModifier
+                    )
 
-                        data.detailData != null -> OssLicensesDetail(
-                            data = data.detailData!!,
-                            modifier = contentModifier
-                        )
-                    }
+                    is OssLicensesDetailState.Error -> OssLicensesDetailError(contentModifier)
                 }
             }
         },
@@ -85,7 +85,8 @@ fun OssLicensesListDetailView(
 @Composable
 private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
     OssLicensesListDetailView(
-        data = OssLicensesState.Loading,
+        overviewData = OssLicensesOverviewState.Loading,
+        detailState = OssLicensesDetailState.NoSelection,
         onLibraryClick = {},
         contentPadding = PaddingValues()
     )
@@ -97,12 +98,12 @@ private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
 @Composable
 private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
     OssLicensesListDetailView(
-        data = OssLicensesState.Data(
-            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
-            detailData = OssLicensesState.Content.Detail(
-                library = OssLicenseInfoMocks.library,
-                licenses = listOf(OssLicenseInfoMocks.license)
-            ),
+        overviewData = OssLicensesOverviewState.Data(
+            ossLicenseInfo = OssLicenseInfoMocks.info
+        ),
+        detailState = OssLicensesDetailState.Content(
+            library = OssLicenseInfoMocks.library,
+            licenses = listOf(OssLicenseInfoMocks.license)
         ),
         onLibraryClick = {},
         contentPadding = PaddingValues()
@@ -115,11 +116,10 @@ private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
 @Composable
 private fun OssLicensesListDetailView_Error_Preview() = MataneTheme {
     OssLicensesListDetailView(
-        data = OssLicensesState.Data(
-            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
-            detailData = null,
-            loadDetailError = true
+        overviewData = OssLicensesOverviewState.Data(
+            ossLicenseInfo = OssLicenseInfoMocks.info
         ),
+        detailState = OssLicensesDetailState.Error,
         onLibraryClick = {},
         contentPadding = PaddingValues()
     )

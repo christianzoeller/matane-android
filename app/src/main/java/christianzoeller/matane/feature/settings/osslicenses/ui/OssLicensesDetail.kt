@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
-import christianzoeller.matane.feature.settings.osslicenses.OssLicensesState
+import christianzoeller.matane.feature.settings.osslicenses.OssLicensesDetailState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
 import christianzoeller.matane.styleguide.components.TextLink
 import christianzoeller.matane.ui.theme.MataneTheme
@@ -21,7 +21,7 @@ import com.mikepenz.aboutlibraries.entity.License
 
 @Composable
 fun OssLicensesDetail(
-    data: OssLicensesState.Content.Detail,
+    data: OssLicensesDetailState.Content,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -127,7 +127,7 @@ private fun LicenseSection(licenses: List<License>) {
 @Composable
 private fun OssLicensesDetail_Preview() = MataneTheme {
     OssLicensesDetail(
-        data = OssLicensesState.Content.Detail(
+        data = OssLicensesDetailState.Content(
             library = OssLicenseInfoMocks.library,
             licenses = listOf(OssLicenseInfoMocks.license)
         ),
