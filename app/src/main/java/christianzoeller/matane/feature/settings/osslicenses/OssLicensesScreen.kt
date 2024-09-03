@@ -28,10 +28,12 @@ fun OssLicensesScreen(
     viewModel: OssLicensesViewModel,
     onNavigateUp: () -> Unit
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val overviewState by viewModel.overviewState.collectAsStateWithLifecycle()
+    val detailState by viewModel.detailState.collectAsStateWithLifecycle()
 
     OssLicensesScreen(
-        state = state,
+        overviewState = overviewState,
+        detailState = detailState,
         onLibraryClick = viewModel::onLibraryClick,
         onNavigateUp = onNavigateUp
     )
@@ -40,7 +42,8 @@ fun OssLicensesScreen(
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 private fun OssLicensesScreen(
-    state: OssLicensesState,
+    overviewState: OssLicensesOverviewState,
+    detailState: OssLicensesDetailState,
     onLibraryClick: (LibraryOverview) -> Unit,
     onNavigateUp: () -> Unit,
 ) {
@@ -60,15 +63,16 @@ private fun OssLicensesScreen(
             )
         }
     ) { contentPadding ->
-        when (state) {
-            is OssLicensesState.Content -> OssLicensesListDetailView(
-                data = state,
+        when (overviewState) {
+            is OssLicensesOverviewState.Content -> OssLicensesListDetailView(
+                overviewData = overviewState,
+                detailState = detailState,
                 onLibraryClick = onLibraryClick,
                 contentPadding = contentPadding,
                 listDetailNavigator = listDetailNavigator
             )
 
-            OssLicensesState.Error -> ErrorView(contentPadding)
+            OssLicensesOverviewState.Error -> ErrorView(contentPadding)
         }
     }
 }
@@ -93,7 +97,8 @@ private fun ErrorView(contentPadding: PaddingValues) {
 @Composable
 private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
     OssLicensesScreen(
-        state = OssLicensesState.Loading,
+        overviewState = OssLicensesOverviewState.Loading,
+        detailState = OssLicensesDetailState.NoSelection,
         onLibraryClick = {},
         onNavigateUp = {}
     )
@@ -103,12 +108,12 @@ private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
 @Composable
 private fun OssLicensesScreen_Content_Preview() = MataneTheme {
     OssLicensesScreen(
-        state = OssLicensesState.Data(
-            overviewData = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
-            detailData = OssLicensesState.Content.Detail(
-                library = OssLicenseInfoMocks.library,
-                licenses = listOf(OssLicenseInfoMocks.license)
-            )
+        overviewState = OssLicensesOverviewState.Data(
+            ossLicenseInfo = OssLicenseInfoMocks.info
+        ),
+        detailState = OssLicensesDetailState.Content(
+            library = OssLicenseInfoMocks.library,
+            licenses = listOf(OssLicenseInfoMocks.license)
         ),
         onLibraryClick = {},
         onNavigateUp = {}
@@ -119,7 +124,8 @@ private fun OssLicensesScreen_Content_Preview() = MataneTheme {
 @Composable
 private fun OssLicensesScreen_Error_Preview() = MataneTheme {
     OssLicensesScreen(
-        state = OssLicensesState.Error,
+        overviewState = OssLicensesOverviewState.Error,
+        detailState = OssLicensesDetailState.Error,
         onLibraryClick = {},
         onNavigateUp = {}
     )

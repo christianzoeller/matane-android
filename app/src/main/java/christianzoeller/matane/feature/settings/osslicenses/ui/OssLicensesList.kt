@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.LibraryOverview
-import christianzoeller.matane.feature.settings.osslicenses.OssLicensesState
+import christianzoeller.matane.feature.settings.osslicenses.OssLicensesOverviewState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
 import christianzoeller.matane.styleguide.modifiers.placeholder
 import christianzoeller.matane.ui.theme.MataneTheme
@@ -23,7 +23,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 
 @Composable
 fun OssLicensesList(
-    data: OssLicensesState.Content.Overview,
+    data: OssLicensesOverviewState.Content,
     listState: LazyListState,
     isLoading: Boolean,
     onLibraryClick: (LibraryOverview) -> Unit,
@@ -75,7 +75,7 @@ fun OssLicensesList(
 @Composable
 private fun OssLicensesList_Loading_Preview() = MataneTheme {
     OssLicensesList(
-        data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        data = OssLicensesOverviewState.Data(OssLicenseInfoMocks.info),
         listState = rememberLazyListState(),
         isLoading = true,
         onLibraryClick = {}
@@ -86,7 +86,7 @@ private fun OssLicensesList_Loading_Preview() = MataneTheme {
 @Composable
 private fun OssLicensesList_Content_Preview() = MataneTheme {
     OssLicensesList(
-        data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        data = OssLicensesOverviewState.Data(OssLicenseInfoMocks.info),
         listState = rememberLazyListState(),
         isLoading = false,
         onLibraryClick = {}

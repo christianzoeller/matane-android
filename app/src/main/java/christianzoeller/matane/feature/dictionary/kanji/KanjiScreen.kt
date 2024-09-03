@@ -89,7 +89,7 @@ private fun ErrorView(contentPadding: PaddingValues) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = R.string.oss_licenses_error_disclaimer),
+            text = stringResource(id = R.string.kanji_error_disclaimer),
             textAlign = TextAlign.Center,
             style = typography.titleMedium
         )

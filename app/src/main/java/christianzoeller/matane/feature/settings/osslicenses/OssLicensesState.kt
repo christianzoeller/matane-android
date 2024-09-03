@@ -9,38 +9,36 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.parcelize.Parcelize
 
-sealed interface OssLicensesState {
+sealed interface OssLicensesOverviewState {
     sealed class Content(
-        open val overviewData: Overview,
-        open val detailData: Detail?,
-    ) : OssLicensesState {
-        data class Overview(val ossLicenseInfo: OssLicenseInfo)
-        data class Detail(
-            val library: Library,
-            val licenses: List<License>
-        )
-    }
+        open val ossLicenseInfo: OssLicenseInfo
+    ) : OssLicensesOverviewState
 
     data object Loading : Content(
-        overviewData = Overview(
-            ossLicenseInfo = OssLicenseInfo(
-                libraries = List(15) { skeletonListItem(it) }.toImmutableList(),
-                licenses = persistentSetOf()
-            )
-        ),
-        detailData = null
+        ossLicenseInfo = OssLicenseInfo(
+            libraries = List(15) { skeletonListItem(it) }.toImmutableList(),
+            licenses = persistentSetOf()
+        )
     )
 
     data class Data(
-        override val overviewData: Overview,
-        override val detailData: Detail? = null,
-        val loadDetailError: Boolean = false
+        override val ossLicenseInfo: OssLicenseInfo
     ) : Content(
-        overviewData = overviewData,
-        detailData = detailData
+        ossLicenseInfo = ossLicenseInfo
     )
 
-    data object Error : OssLicensesState
+    data object Error : OssLicensesOverviewState
+}
+
+sealed interface OssLicensesDetailState {
+    data object NoSelection : OssLicensesDetailState
+
+    data class Content(
+        val library: Library,
+        val licenses: List<License>
+    ) : OssLicensesDetailState
+
+    data object Error : OssLicensesDetailState
 }
 
 @Parcelize

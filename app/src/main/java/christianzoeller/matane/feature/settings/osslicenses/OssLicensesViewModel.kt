@@ -15,13 +15,26 @@ import kotlin.time.Duration.Companion.seconds
 class OssLicensesViewModel @Inject constructor(
     private val ossLicensesRepository: OssLicensesRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<OssLicensesState>(
-        OssLicensesState.Loading
+    private val _overviewState = MutableStateFlow<OssLicensesOverviewState>(
+        OssLicensesOverviewState.Loading
     )
-    val state = _state.asStateFlow()
+    val overviewState = _overviewState.asStateFlow()
+
+    private val _detailState = MutableStateFlow<OssLicensesDetailState>(OssLicensesDetailState.NoSelection)
+    val detailState = _detailState.asStateFlow()
 
     init {
         loadLicenseInfo()
+
+        viewModelScope.launch {
+            overviewState.collect {
+                _detailState.value = when (it) {
+                    is OssLicensesOverviewState.Loading -> OssLicensesDetailState.NoSelection
+                    is OssLicensesOverviewState.Data -> OssLicensesDetailState.NoSelection
+                    is OssLicensesOverviewState.Error -> OssLicensesDetailState.Error
+                }
+            }
+        }
     }
 
     private fun loadLicenseInfo() {
@@ -30,36 +43,26 @@ class OssLicensesViewModel @Inject constructor(
             // something happens (and to show off the skeleton loading)
             delay(0.4.seconds)
 
-            _state.value = when (val info = ossLicensesRepository.ossLicenseInfo) {
-                null -> OssLicensesState.Error
-
-                else -> OssLicensesState.Data(
-                    overviewData = OssLicensesState.Content.Overview(info)
-                )
+            _overviewState.value = when (val info = ossLicensesRepository.ossLicenseInfo) {
+                null -> OssLicensesOverviewState.Error
+                else -> OssLicensesOverviewState.Data(ossLicenseInfo = info)
             }
         }
     }
 
     fun onLibraryClick(libraryOverview: LibraryOverview) {
-        val current = _state.value as? OssLicensesState.Data ?: return
+        if (_overviewState.value !is OssLicensesOverviewState.Data) return
 
         val library = ossLicensesRepository.getLibraryById(libraryOverview.libraryId)
         val licenses = libraryOverview.licenses.mapNotNull {
             ossLicensesRepository.getLicenseByName(it)
         }
 
-        _state.value = when (library) {
-            null -> current.copy(
-                detailData = null,
-                loadDetailError = true
-            )
-
-            else -> current.copy(
-                detailData = OssLicensesState.Content.Detail(
-                    library = library,
-                    licenses = licenses
-                ),
-                loadDetailError = false
+        _detailState.value = when (library) {
+            null -> OssLicensesDetailState.Error
+            else -> OssLicensesDetailState.Content(
+                library = library,
+                licenses = licenses
             )
         }
     }
