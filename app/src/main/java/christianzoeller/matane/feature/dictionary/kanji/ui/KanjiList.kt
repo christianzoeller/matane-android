@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -25,11 +27,15 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 @Composable
 fun KanjiList(
     data: KanjiOverviewState.Content,
+    listState: LazyListState,
     isLoading: Boolean,
     onKanjiClick: (KanjiLiteral) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        state = listState
+    ) {
         items(
             items = data.kanjiList,
             key = { it.id }
@@ -91,6 +97,7 @@ private fun KanjiList_Loading_Preview() = MataneTheme {
                 KanjiInContextMocks.umi.copy(id = index)
             }
         ),
+        listState = rememberLazyListState(),
         isLoading = true,
         onKanjiClick = {}
     )
@@ -105,6 +112,7 @@ private fun KanjiList_Content_Preview() = MataneTheme {
                 KanjiInContextMocks.umi.copy(id = index)
             }
         ),
+        listState = rememberLazyListState(),
         isLoading = false,
         onKanjiClick = {}
     )

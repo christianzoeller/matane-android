@@ -1,6 +1,7 @@
 package christianzoeller.matane.project
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.ui.Modifier
@@ -50,13 +51,37 @@ class CorrectnessTest {
      */
     @OptIn(ExperimentalMaterial3AdaptiveApi::class)
     @Test
-    fun `list-detail screen content composable have a navigator parameter`() {
+    fun `list-detail screen content composables have a navigator parameter`() {
         Konsist.scopeFromProject()
             .composableFunctions()
             .withNameEndingWith(listDetailScreenContentComposableSuffix)
             .assertTrue { function ->
                 function.hasParameter { parameter ->
                     parameter.hasTypeOf(ThreePaneScaffoldNavigator::class)
+                }
+            }
+    }
+
+    /**
+     * The list views in list-detail views might leave the composition tree if
+     * the user navigates to a detail view and the list and detail views are on
+     * separate screens due to the form factor of the device.
+     *
+     * That is why it is crucial that the list state of the lists are created
+     * high enough in the tree to ensure that they are retained even if the
+     * list leaves composition. Otherwise, the list will be back at the top if
+     * the user navigates back to it.
+     *
+     * This test attempts to enforce correct handling of list state.
+     */
+    @Test
+    fun `lists composables used in list-detail screens take a state parameter`() {
+        Konsist.scopeFromProject()
+            .composableFunctions()
+            .withNameEndingWith(listDetailScreenContentComposableListViewSuffix)
+            .assertTrue { function ->
+                function.hasParameter { parameter ->
+                    parameter.hasTypeOf(LazyListState::class)
                 }
             }
     }

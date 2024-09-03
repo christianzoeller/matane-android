@@ -2,7 +2,9 @@ package christianzoeller.matane.feature.settings.osslicenses.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -22,11 +24,15 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 @Composable
 fun OssLicensesList(
     data: OssLicensesState.Content.Overview,
+    listState: LazyListState,
     isLoading: Boolean,
     onLibraryClick: (LibraryOverview) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        state = listState
+    ) {
         items(
             items = data.ossLicenseInfo.libraries,
             key = { it.uniqueId }
@@ -70,6 +76,7 @@ fun OssLicensesList(
 private fun OssLicensesList_Loading_Preview() = MataneTheme {
     OssLicensesList(
         data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        listState = rememberLazyListState(),
         isLoading = true,
         onLibraryClick = {}
     )
@@ -80,6 +87,7 @@ private fun OssLicensesList_Loading_Preview() = MataneTheme {
 private fun OssLicensesList_Content_Preview() = MataneTheme {
     OssLicensesList(
         data = OssLicensesState.Content.Overview(OssLicenseInfoMocks.info),
+        listState = rememberLazyListState(),
         isLoading = false,
         onLibraryClick = {}
     )
