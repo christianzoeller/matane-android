@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -40,6 +41,7 @@ fun KanjiListDetailView(
         listDetailNavigator.navigateBack()
     }
 
+    val listState = rememberLazyListState()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -47,6 +49,7 @@ fun KanjiListDetailView(
             AnimatedPane {
                 KanjiList(
                     data = overviewData,
+                    listState = listState,
                     isLoading = overviewData is KanjiOverviewState.Loading,
                     onKanjiClick = { kanji ->
                         onKanjiClick(kanji)

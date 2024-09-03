@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -36,6 +37,7 @@ fun OssLicensesListDetailView(
         listDetailNavigator.navigateBack()
     }
 
+    val listState = rememberLazyListState()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -43,6 +45,7 @@ fun OssLicensesListDetailView(
             AnimatedPane {
                 OssLicensesList(
                     data = data.overviewData,
+                    listState = listState,
                     isLoading = data is OssLicensesState.Loading,
                     onLibraryClick = { library ->
                         onLibraryClick(library)
