@@ -36,4 +36,24 @@
 	<string name="acknowledgements_kradfile_link_label">About the RADKFILE / KRADFILE project</string>
 	<string name="acknowledgements_kanjidic_link_url">http://www.edrdg.org/wiki/index.php/KANJIDIC_Project</string>
 	<string name="acknowledgements_kradfile_link_url">https://www.edrdg.org/krad/kradinf.html</string>
+    <string name="kanji_list_header_by_frequency_label">Most frequently used</string>
+	<string name="kanji_list_header_by_grade_label">Taught in school</string>
+	<string name="kanji_list_header_info_button_icon_description">Find out more about how the kanji are sorted</string>
+	<string name="kanji_list_header_switch_button_icon_description">Change the sort order of the kanji</string>
+    <string name="kanji_list_options_sheet_header">Change sort order</string>
+	<string name="kanji_list_options_sheet_by_frequency_option">How frequently the kanji are used</string>
+	<string name="kanji_list_options_sheet_by_grade_option">When they are taught in school</string>
+	<string name="kanji_list_options_sheet_description">You can change in which order the kanji are listed up. Choose one of the following options:\n\nOrder by</string>
+	<string name="kanji_list_info_sheet_by_frequency_description">The kanji are listed up by how often they are used in newspapers.</string>
+	<string name="kanji_list_info_sheet_by_grade_description">The kanji are listed up by when they are taught in school.</string>
+	<string name="global_confirm">Confirm</string>
+	<string name="kanji_list_info_sheet_header">About this list</string>
+	<string name="kanji_list_item_taught_in_grade_one">Taught in first grade</string>
+	<string name="kanji_list_item_taught_in_grade_two">Taught in second grade</string>
+	<string name="kanji_list_item_taught_in_grade_three">Taught in third grade</string>
+	<string name="kanji_list_item_taught_in_grade_four">Taught in fourth grade</string>
+	<string name="kanji_list_item_taught_in_grade_five">Taught in fifth grade</string>
+	<string name="kanji_list_item_taught_in_grade_six">Taught in sixth grade</string>
+	<string name="kanji_list_item_taught_in_junior_high">Taught in Junior High School</string>
+	<string name="kanji_list_item_name_kanji_taught_in_junior_high">Name kanji taught in Junior High School</string>
 </resources>

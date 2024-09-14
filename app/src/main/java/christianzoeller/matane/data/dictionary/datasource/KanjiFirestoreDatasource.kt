@@ -1,5 +1,6 @@
 package christianzoeller.matane.data.dictionary.datasource
 
+import christianzoeller.matane.common.extensions.fetchPaginated
 import christianzoeller.matane.common.extensions.handleFirestoreQueryResult
 import christianzoeller.matane.common.model.RequestResult
 import christianzoeller.matane.data.dictionary.model.KanjiInContext
@@ -28,12 +29,26 @@ class KanjiFirestoreDatasource @Inject constructor() {
                 firestoreKanji?.toKanji() // TODO should we allow null here?
             }
 
-    // TODO implement paging
-    suspend fun getKanjiByGrade(): RequestResult<List<KanjiInContext>> {
+    suspend fun getKanjiByGrade(
+        lastKanji: KanjiInContext?,
+        numberOfItems: Int
+    ): RequestResult<List<KanjiInContext>> {
         val gradeField = FieldPath.of("Priority")
-        return db.collection(kanjiByGradeCollectionId)
+        val idField = FieldPath.of("Id")
+
+        val collectionOrdered = db
+            .collection(kanjiByGradeCollectionId)
             .orderBy(gradeField)
-            .limit(30) // TODO turn into parameter
+            .orderBy(idField)
+
+        val collectionWithCorrectStart = if (lastKanji != null) {
+            collectionOrdered.startAfter(lastKanji.priority, lastKanji.id)
+        } else {
+            collectionOrdered
+        }
+
+        return collectionWithCorrectStart
+            .limit(numberOfItems.toLong())
             .get()
             .handleFirestoreQueryResult { result ->
                 result.documents.mapNotNull { document ->
@@ -44,12 +59,17 @@ class KanjiFirestoreDatasource @Inject constructor() {
             }
     }
 
-    suspend fun getMostFrequentKanji(): RequestResult<List<KanjiInContext>> {
-        val frequencyField = FieldPath.of("Priority")
+    suspend fun getMostFrequentKanji(
+        currentOffset: Int,
+        numberOfItems: Int
+    ): RequestResult<List<KanjiInContext>> {
+        val frequencyStartValue = currentOffset.toString().padStart(4)
         return db.collection(kanjiByFrequencyCollectionId)
-            .orderBy(frequencyField)
-            .limit(30) // TODO turn into parameter
-            .get()
+            .fetchPaginated(
+                orderBy = "Priority",
+                startAfter = frequencyStartValue,
+                limit = numberOfItems
+            )
             .handleFirestoreQueryResult { result ->
                 result.documents.mapNotNull { document ->
                     document
