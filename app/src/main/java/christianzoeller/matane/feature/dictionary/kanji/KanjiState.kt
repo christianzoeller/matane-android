@@ -4,25 +4,47 @@ import android.os.Parcelable
 import christianzoeller.matane.data.dictionary.model.Kanji
 import christianzoeller.matane.data.dictionary.model.KanjiInContext
 import christianzoeller.matane.data.dictionary.model.RadicalInKanji
+import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import kotlinx.parcelize.Parcelize
 
+enum class KanjiListType {
+    ByFrequency,
+    ByGrade
+}
+
 sealed interface KanjiOverviewState {
+    val listType: KanjiListType
+
     sealed class Content(
-        open val kanjiList: List<KanjiInContext>
+        open val kanjiList: List<KanjiListItemModel>,
+        override val listType: KanjiListType
     ) : KanjiOverviewState
 
-    data object Loading : Content(
-        kanjiList = List(15) { skeletonListItem(it) }
+    data class Loading(
+        override val listType: KanjiListType
+    ) : Content(
+        kanjiList = List(15) { skeletonListItem(it) },
+        listType = listType
     )
 
     data class Data(
-        override val kanjiList: List<KanjiInContext>
+        override val kanjiList: List<KanjiListItemModel>,
+        override val listType: KanjiListType
     ) : Content(
-        kanjiList = kanjiList
+        kanjiList = kanjiList,
+        listType = listType
     )
 
-    data object Error : KanjiOverviewState
+    data class LoadingMore(
+        val currentContent: List<KanjiListItemModel>,
+        override val listType: KanjiListType
+    ) : Content(
+        kanjiList = currentContent + List(15) { skeletonListItem(it) },
+        listType = listType
+    )
+
+    data class Error(override val listType: KanjiListType) : KanjiOverviewState
 }
 
 sealed interface KanjiDetailState {
@@ -54,14 +76,17 @@ data class KanjiLiteral(
     val value: String
 ) : Parcelable
 
-private fun skeletonListItem(id: Int) = KanjiInContext(
-    id = id,
-    literal = "海",
-    reading = "うみ",
-    onyomi = "カイ",
-    kunyomi = "うみ",
-    meanings = "sea, ocean",
-    priority = "200"
+private fun skeletonListItem(id: Int) = KanjiListItemModel(
+    kanji = KanjiInContext(
+        id = id,
+        literal = "海",
+        reading = "うみ",
+        onyomi = "カイ",
+        kunyomi = "うみ",
+        meanings = "sea, ocean",
+        priority = "200",
+    ),
+    isLoading = true
 )
 
 private val skeletonDetailKanji = KanjiMocks.sortOfThing // TODO create a kanji that is optimized for showing a nice skeleton view

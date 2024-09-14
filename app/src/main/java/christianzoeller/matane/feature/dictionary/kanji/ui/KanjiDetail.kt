@@ -9,16 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +35,7 @@ import christianzoeller.matane.data.dictionary.model.kanji.ReadingMeaningGroup
 import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
+import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
 import christianzoeller.matane.styleguide.modifiers.placeholder
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -183,7 +180,7 @@ private fun ReadingMeaningGroup(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RadicalSection(
     radicals: List<RadicalInKanji>,
@@ -226,26 +223,15 @@ private fun RadicalSection(
     }
 
     if (showInfoSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showInfoSheet = false }
+        DefaultModalBottomSheet(
+            onDismissRequest = { showInfoSheet = false },
+            title = R.string.kanji_detail_radical_section_radical_explanation_header
         ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        start = 16.dp, end = 16.dp,
-                        top = 8.dp, bottom = 32.dp
-                    )
-            ) {
-                Text(
-                    text = stringResource(id = R.string.kanji_detail_radical_section_radical_explanation_header),
-                    style = typography.titleLarge
+            Text(
+                text = stringResource(
+                    id = R.string.kanji_detail_radical_section_radical_explanation
                 )
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = stringResource(id = R.string.kanji_detail_radical_section_radical_explanation)
-                )
-            }
+            )
         }
     }
 }

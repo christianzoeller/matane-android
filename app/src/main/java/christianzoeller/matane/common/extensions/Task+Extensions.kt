@@ -24,4 +24,5 @@ suspend fun <TResult, R> Task<TResult>.handleFirestoreQueryResult(
             Firebase.crashlytics.recordException(exception)
             continuation.resume(RequestResult.Error(exception))
         }
+        // TODO add on cancelled listener
 }

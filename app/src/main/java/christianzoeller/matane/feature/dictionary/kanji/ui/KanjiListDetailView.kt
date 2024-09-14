@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
+import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.feature.dictionary.kanji.KanjiLiteral
 import christianzoeller.matane.feature.dictionary.kanji.KanjiOverviewState
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMocks
+import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
 import christianzoeller.matane.ui.theme.MataneTheme
@@ -33,7 +35,9 @@ import christianzoeller.matane.ui.tooling.MediumPreview
 fun KanjiListDetailView(
     overviewData: KanjiOverviewState.Content,
     detailState: KanjiDetailState,
+    onListTypeChange: (KanjiListType) -> Unit,
     onKanjiClick: (KanjiLiteral) -> Unit,
+    onLoadMore: () -> Unit,
     contentPadding: PaddingValues,
     listDetailNavigator: ThreePaneScaffoldNavigator<KanjiLiteral> = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
 ) {
@@ -50,11 +54,12 @@ fun KanjiListDetailView(
                 KanjiList(
                     data = overviewData,
                     listState = listState,
-                    isLoading = overviewData is KanjiOverviewState.Loading,
+                    onListTypeChange = onListTypeChange,
                     onKanjiClick = { kanji ->
                         onKanjiClick(kanji)
                         listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, kanji)
-                    }
+                    },
+                    onLoadMore = onLoadMore
                 )
             }
         },
@@ -94,9 +99,13 @@ fun KanjiListDetailView(
 @Composable
 private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
     KanjiListDetailView(
-        overviewData = KanjiOverviewState.Loading,
+        overviewData = KanjiOverviewState.Loading(
+            listType = KanjiListType.ByFrequency
+        ),
         detailState = KanjiDetailState.Loading,
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         contentPadding = PaddingValues()
     )
 }
@@ -109,14 +118,20 @@ private fun KanjiListDetailView_Content_Preview() = MataneTheme {
     KanjiListDetailView(
         overviewData = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->
-                KanjiInContextMocks.umi.copy(id = index)
-            }
+                KanjiListItemModel(
+                    kanji = KanjiInContextMocks.umi.copy(id = index),
+                    isLoading = false
+                )
+            },
+            listType = KanjiListType.ByFrequency
         ),
         detailState = KanjiDetailState.Data(
             kanji = KanjiMocks.sortOfThing,
             radicals = RadicalInKanjiMocks.sortOfThingRadicals
         ),
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         contentPadding = PaddingValues()
     )
 }
@@ -129,11 +144,17 @@ private fun KanjiListDetailView_Error_Preview() = MataneTheme {
     KanjiListDetailView(
         overviewData = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->
-                KanjiInContextMocks.umi.copy(id = index)
-            }
+                KanjiListItemModel(
+                    kanji = KanjiInContextMocks.umi.copy(id = index),
+                    isLoading = false
+                )
+            },
+            listType = KanjiListType.ByFrequency
         ),
         detailState = KanjiDetailState.Error,
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         contentPadding = PaddingValues()
     )
 }

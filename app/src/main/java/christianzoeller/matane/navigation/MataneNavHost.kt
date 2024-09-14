@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import christianzoeller.matane.MataneAppState
+import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.feature.dictionary.kanji.KanjiScreen
 import christianzoeller.matane.feature.dictionary.kanji.KanjiViewModel
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
@@ -27,7 +28,11 @@ fun MataneNavHost(
         ) {
             composable<Destination.Search> {
                 SearchScreen(
-                    onMostFrequentKanjiCardClick = { appState.navigate(Destination.Kanji) }
+                    onMostFrequentKanjiCardClick = {
+                        appState.navigate(
+                            Destination.Kanji(KanjiListType.ByFrequency)
+                        )
+                    }
                 )
             }
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMocks
+import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiListDetailView
@@ -36,7 +37,9 @@ fun KanjiScreen(
     KanjiScreen(
         overviewState = overviewState,
         detailState = detailState,
+        onListTypeChange = viewModel::onListTypeChange,
         onKanjiClick = viewModel::onKanjiClick,
+        onLoadMore = viewModel::onLoadMore,
         onNavigateUp = onNavigateUp
     )
 }
@@ -46,7 +49,9 @@ fun KanjiScreen(
 private fun KanjiScreen(
     overviewState: KanjiOverviewState,
     detailState: KanjiDetailState,
+    onListTypeChange: (KanjiListType) -> Unit,
     onKanjiClick: (KanjiLiteral) -> Unit,
+    onLoadMore: () -> Unit,
     onNavigateUp: () -> Unit,
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
@@ -70,7 +75,9 @@ private fun KanjiScreen(
             is KanjiOverviewState.Content -> KanjiListDetailView(
                 overviewData = overviewState,
                 detailState = detailState,
+                onListTypeChange = onListTypeChange,
                 onKanjiClick = onKanjiClick,
+                onLoadMore = onLoadMore,
                 contentPadding = contentPadding,
                 listDetailNavigator = listDetailNavigator
             )
@@ -93,6 +100,7 @@ private fun ErrorView(contentPadding: PaddingValues) {
             textAlign = TextAlign.Center,
             style = typography.titleMedium
         )
+        // TODO add button to trigger a reload
     }
 }
 
@@ -100,9 +108,13 @@ private fun ErrorView(contentPadding: PaddingValues) {
 @Composable
 private fun KanjiScreen_Loading_Preview() = MataneTheme {
     KanjiScreen(
-        overviewState = KanjiOverviewState.Loading,
+        overviewState = KanjiOverviewState.Loading(
+            listType = KanjiListType.ByFrequency
+        ),
         detailState = KanjiDetailState.NoSelection,
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         onNavigateUp = {}
     )
 }
@@ -113,14 +125,20 @@ private fun KanjiScreen_Content_Preview() = MataneTheme {
     KanjiScreen(
         overviewState = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->
-                KanjiInContextMocks.umi.copy(id = index)
-            }
+                KanjiListItemModel(
+                    kanji = KanjiInContextMocks.umi.copy(id = index),
+                    isLoading = false
+                )
+            },
+            listType = KanjiListType.ByFrequency
         ),
         detailState = KanjiDetailState.Data(
             kanji = KanjiMocks.sortOfThing,
             radicals = RadicalInKanjiMocks.sortOfThingRadicals
         ),
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         onNavigateUp = {}
     )
 }
@@ -129,9 +147,13 @@ private fun KanjiScreen_Content_Preview() = MataneTheme {
 @Composable
 private fun KanjiScreen_Error_Preview() = MataneTheme {
     KanjiScreen(
-        overviewState = KanjiOverviewState.Error,
+        overviewState = KanjiOverviewState.Error(
+            listType = KanjiListType.ByFrequency
+        ),
         detailState = KanjiDetailState.Error,
+        onListTypeChange = {},
         onKanjiClick = {},
+        onLoadMore = {},
         onNavigateUp = {}
     )
 }

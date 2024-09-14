@@ -1,5 +1,6 @@
 package christianzoeller.matane.navigation
 
+import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import kotlinx.serialization.Serializable
 
 sealed interface Destination {
@@ -7,7 +8,9 @@ sealed interface Destination {
     data object Search : Destination
 
     @Serializable
-    data object Kanji : Destination
+    data class Kanji(
+        val listType: KanjiListType
+    ) : Destination
 
     @Serializable
     data object Settings : Destination
