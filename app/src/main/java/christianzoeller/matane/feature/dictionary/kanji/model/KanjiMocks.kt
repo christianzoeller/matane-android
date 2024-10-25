@@ -30,7 +30,7 @@ object KanjiMocks {
         ),
         misc = Misc(
             grade = 4,
-            strokeCount = 12,
+            strokeCount = listOf(12),
             frequency = 401,
             legacyJlptLevel = LegacyJlptLevel.N2,
         ),

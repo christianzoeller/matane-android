@@ -1,10 +1,8 @@
 package christianzoeller.matane.data.dictionary.datasource
 
-import christianzoeller.matane.common.extensions.handleFirestoreQueryResult
-import christianzoeller.matane.data.dictionary.model.firestore.KanjiWithRadicalsFirestoreDto
-import christianzoeller.matane.data.dictionary.model.firestore.toRadicalsInKanji
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
+import christianzoeller.matane.data.dictionary.model.KanjiWithRadicals
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.firestore
 import javax.inject.Inject
 
 private const val kanjiRadicalsCollectionId = "kanji-radicals"
@@ -16,8 +14,6 @@ class RadicalFirestoreDatasource @Inject constructor() {
         db.collection(kanjiRadicalsCollectionId)
             .document(kanjiId.toString())
             .get()
-            .handleFirestoreQueryResult { result ->
-                val kanjiWithRadicals = result.toObject(KanjiWithRadicalsFirestoreDto::class.java)
-                kanjiWithRadicals?.toRadicalsInKanji()
-            }
+            .data(KanjiWithRadicals.serializer())
+            .radicals
 }

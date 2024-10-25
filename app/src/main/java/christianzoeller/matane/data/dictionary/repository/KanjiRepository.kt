@@ -1,5 +1,6 @@
 package christianzoeller.matane.data.dictionary.repository
 
+import christianzoeller.matane.common.extensions.runRequest
 import christianzoeller.matane.common.model.RequestState
 import christianzoeller.matane.data.dictionary.datasource.KanjiFirestoreDatasource
 import christianzoeller.matane.data.dictionary.model.Kanji
@@ -13,14 +14,14 @@ import javax.inject.Singleton
 class KanjiRepository @Inject constructor(
     private val kanjiFirestoreDatasource: KanjiFirestoreDatasource
 ) {
-    suspend fun getKanjiByLiteral(literal: String): Flow<RequestState<Kanji?>> {
+    fun getKanjiByLiteral(literal: String): Flow<RequestState<Kanji?>> {
         require(literal.length == 1)
 
         return flow {
             emit(RequestState.Loading)
 
             val id = literal.first().code
-            emit(kanjiFirestoreDatasource.getKanjiById(id))
+            emit(runRequest { kanjiFirestoreDatasource.getKanjiById(id) })
         }
     }
 
@@ -35,29 +36,33 @@ class KanjiRepository @Inject constructor(
      * @param numberOfItems The maximum number of items to be returned by this
      * function.
      */
-    suspend fun getKanjiByGrade(
+    fun getKanjiByGrade(
         lastKanji: KanjiInContext?,
         numberOfItems: Int
     ) = flow {
         emit(RequestState.Loading)
         emit(
-            kanjiFirestoreDatasource.getKanjiByGrade(
-                lastKanji = lastKanji,
-                numberOfItems = numberOfItems
-            )
+            runRequest {
+                kanjiFirestoreDatasource.getKanjiByGrade(
+                    lastKanji = lastKanji,
+                    numberOfItems = numberOfItems
+                )
+            }
         )
     }
 
-    suspend fun getMostFrequentKanji(
+    fun getMostFrequentKanji(
         currentOffset: Int,
         numberOfItems: Int
     ) = flow {
         emit(RequestState.Loading)
         emit(
-            kanjiFirestoreDatasource.getMostFrequentKanji(
-                currentOffset = currentOffset,
-                numberOfItems = numberOfItems
-            )
+            runRequest {
+                kanjiFirestoreDatasource.getMostFrequentKanji(
+                    currentOffset = currentOffset,
+                    numberOfItems = numberOfItems
+                )
+            }
         )
     }
 }

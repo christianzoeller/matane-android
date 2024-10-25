@@ -1,16 +1,11 @@
 package christianzoeller.matane.data.dictionary.datasource
 
 import christianzoeller.matane.common.extensions.fetchPaginated
-import christianzoeller.matane.common.extensions.handleFirestoreQueryResult
-import christianzoeller.matane.common.model.RequestResult
+import christianzoeller.matane.data.dictionary.model.Kanji
 import christianzoeller.matane.data.dictionary.model.KanjiInContext
-import christianzoeller.matane.data.dictionary.model.firestore.KanjiFirestoreDto
-import christianzoeller.matane.data.dictionary.model.firestore.KanjiInContextFirestoreDto
-import christianzoeller.matane.data.dictionary.model.firestore.toKanji
-import christianzoeller.matane.data.dictionary.model.firestore.toKanjiInContext
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.firestore
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.FieldPath
+import dev.gitlive.firebase.firestore.firestore
 import javax.inject.Inject
 
 private const val kanjiCollectionId = "kanji"
@@ -24,17 +19,14 @@ class KanjiFirestoreDatasource @Inject constructor() {
         db.collection(kanjiCollectionId)
             .document(id.toString())
             .get()
-            .handleFirestoreQueryResult { result ->
-                val firestoreKanji = result.toObject(KanjiFirestoreDto::class.java)
-                firestoreKanji?.toKanji() // TODO should we allow null here?
-            }
+            .data(Kanji.serializer())
 
     suspend fun getKanjiByGrade(
         lastKanji: KanjiInContext?,
         numberOfItems: Int
-    ): RequestResult<List<KanjiInContext>> {
-        val gradeField = FieldPath.of("Priority")
-        val idField = FieldPath.of("Id")
+    ): List<KanjiInContext> {
+        val gradeField = FieldPath("Priority")
+        val idField = FieldPath("Id")
 
         val collectionOrdered = db
             .collection(kanjiByGradeCollectionId)
@@ -42,7 +34,7 @@ class KanjiFirestoreDatasource @Inject constructor() {
             .orderBy(idField)
 
         val collectionWithCorrectStart = if (lastKanji != null) {
-            collectionOrdered.startAfter(lastKanji.priority, lastKanji.id)
+            collectionOrdered.startAfter(lastKanji.priority as Any, lastKanji.id)
         } else {
             collectionOrdered
         }
@@ -50,32 +42,22 @@ class KanjiFirestoreDatasource @Inject constructor() {
         return collectionWithCorrectStart
             .limit(numberOfItems.toLong())
             .get()
-            .handleFirestoreQueryResult { result ->
-                result.documents.mapNotNull { document ->
-                    document
-                        .toObject(KanjiInContextFirestoreDto::class.java)
-                        ?.toKanjiInContext(requirePriority = true)
-                }
-            }
+            .documents
+            .map { it.data(KanjiInContext.serializer()) }
     }
 
     suspend fun getMostFrequentKanji(
         currentOffset: Int,
         numberOfItems: Int
-    ): RequestResult<List<KanjiInContext>> {
+    ): List<KanjiInContext> {
         val frequencyStartValue = currentOffset.toString().padStart(4)
         return db.collection(kanjiByFrequencyCollectionId)
             .fetchPaginated(
                 orderBy = "Priority",
                 startAfter = frequencyStartValue,
                 limit = numberOfItems
-            )
-            .handleFirestoreQueryResult { result ->
-                result.documents.mapNotNull { document ->
-                    document
-                        .toObject(KanjiInContextFirestoreDto::class.java)
-                        ?.toKanjiInContext(requirePriority = true)
-                }
+            ) { document ->
+                document.data(KanjiInContext.serializer())
             }
     }
 }

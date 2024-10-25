@@ -1,5 +1,6 @@
 package christianzoeller.matane.data.dictionary.repository
 
+import christianzoeller.matane.common.extensions.runRequest
 import christianzoeller.matane.common.model.RequestState
 import christianzoeller.matane.data.dictionary.datasource.RadicalFirestoreDatasource
 import christianzoeller.matane.data.dictionary.model.RadicalInKanji
@@ -12,14 +13,18 @@ import javax.inject.Singleton
 class RadicalRepository @Inject constructor(
     private val radicalFirestoreDatasource: RadicalFirestoreDatasource
 ) {
-    suspend fun getRadicalsForKanji(kanjiLiteral: String): Flow<RequestState<List<RadicalInKanji>?>> {
+    fun getRadicalsForKanji(kanjiLiteral: String): Flow<RequestState<List<RadicalInKanji>?>> {
         require(kanjiLiteral.length == 1)
 
         return flow {
             emit(RequestState.Loading)
 
             val id = kanjiLiteral.first().code
-            emit(radicalFirestoreDatasource.getRadicalsForKanji(id))
+            emit(
+                runRequest {
+                    radicalFirestoreDatasource.getRadicalsForKanji(id)
+                }
+            )
         }
     }
 }
