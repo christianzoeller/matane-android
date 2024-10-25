@@ -1,6 +1,8 @@
 package christianzoeller.matane.data.dictionary.model
 
 import christianzoeller.matane.data.dictionary.model.kanji.ReadingType
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 
 /**
@@ -9,15 +11,18 @@ import christianzoeller.matane.data.dictionary.model.kanji.ReadingType
  * Should only be used in cases where the kanji is not shown on its own but
  * rather in a given context, e.g. a sentence or a word.
  */
+@Serializable
 data class KanjiInContext(
     /**
      * The ID of the kanji.
      */
+    @SerialName("Id")
     val id: Int,
 
     /**
      * The actual kanji character.
      */
+    @SerialName("Literal")
     val literal: String,
 
     /**
@@ -26,23 +31,27 @@ data class KanjiInContext(
      * given context. Might be missing, but then, [onyomi] or [kunyomi] should
      * be present.
      */
+    @SerialName("Reading")
     val reading: String? = null,
 
     /**
      * The onyomi readings of the kanji as a comma-separated string. Might be
      * missing in case the [reading] is set.
      */
+    @SerialName("Onyomi")
     val onyomi: String? = null,
 
     /**
      * The kunyomi readings of the kanji as a comma-separated string. Might be
      * missing in case the [reading] is set.
      */
+    @SerialName("Kunyomi")
     val kunyomi: String? = null,
 
     /**
      * The meanings of the kanji as a comma-separated string.
      */
+    @SerialName("Meanings")
     val meanings: String,
 
     /**
@@ -50,6 +59,7 @@ data class KanjiInContext(
      * list of kanji ordered by the grade in which they are taught, this could
      * be the grade number.
      */
+    @SerialName("Priority")
     val priority: String? = null
 )
 
@@ -69,7 +79,7 @@ fun Kanji.toKanjiInContext(priority: String?): KanjiInContext {
         throw IllegalArgumentException("Kanji $literal has no readings or meanings")
     }
 
-    val groups = readingMeaning!!.groups!!
+    val groups = readingMeaning.groups
     val meanings = groups
         .mapNotNull { group -> group.meanings }
         .takeUnless { it.isEmpty() }
