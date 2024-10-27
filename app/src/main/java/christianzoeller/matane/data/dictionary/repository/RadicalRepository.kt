@@ -13,7 +13,29 @@ import javax.inject.Singleton
 class RadicalRepository @Inject constructor(
     private val radicalFirestoreDatasource: RadicalFirestoreDatasource
 ) {
-    fun getRadicalsForKanji(kanjiLiteral: String): Flow<RequestState<List<RadicalInKanji>?>> {
+    fun getRadicalByLiteral(literal: String) = flow {
+        emit(RequestState.Loading)
+
+        val id = literal.first().code
+        emit(runRequest { radicalFirestoreDatasource.getRadicalById(id) })
+    }
+
+    fun getRadicals(
+        currentOffset: Int,
+        numberOfItems: Int
+    ) = flow {
+        emit(RequestState.Loading)
+        emit(
+            runRequest {
+                radicalFirestoreDatasource.getRadicals(
+                    currentOffset = currentOffset,
+                    numberOfItems = numberOfItems
+                )
+            }
+        )
+    }
+
+    fun getRadicalsForKanji(kanjiLiteral: String): Flow<RequestState<List<RadicalInKanji>>> {
         require(kanjiLiteral.length == 1)
 
         return flow {

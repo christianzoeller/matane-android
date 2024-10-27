@@ -10,6 +10,7 @@ import christianzoeller.matane.common.model.RequestState
 import christianzoeller.matane.data.dictionary.repository.KanjiRepository
 import christianzoeller.matane.data.dictionary.repository.RadicalRepository
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
+import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
 import christianzoeller.matane.navigation.Destination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +37,9 @@ class KanjiViewModel @Inject constructor(
 
     private val _detailState = MutableStateFlow<KanjiDetailState>(KanjiDetailState.NoSelection)
     val detailState = _detailState.asStateFlow()
+
+    private val _radicalDetailState = MutableStateFlow<RadicalDetailState?>(null)
+    val radicalDetailState = _radicalDetailState.asStateFlow()
 
     init {
         loadInitialData(initialListType)
@@ -113,10 +117,10 @@ class KanjiViewModel @Inject constructor(
                     is RequestState.Loading -> KanjiDetailState.Loading
 
                     is RequestResult.Success -> {
-                        if (requestState.data.first != null && requestState.data.second != null) {
+                        if (requestState.data.first != null) {
                             KanjiDetailState.Data(
                                 kanji = requestState.data.first!!,
-                                radicals = requestState.data.second!!
+                                radicals = requestState.data.second
                             )
                         } else {
                             KanjiDetailState.Error
@@ -138,6 +142,7 @@ class KanjiViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
+            _overviewState.value = loadingMoreState
             val requestFlow = when (current.listType) {
                 KanjiListType.ByFrequency -> {
                     val offset = current.kanjiList
@@ -162,7 +167,6 @@ class KanjiViewModel @Inject constructor(
                 }
             }
 
-            _overviewState.value = loadingMoreState
             requestFlow.collect { requestState ->
                 _overviewState.value = when (requestState) {
                     is RequestState.Loading -> loadingMoreState
@@ -184,5 +188,27 @@ class KanjiViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun onRadicalClick(radicalLiteral: String) {
+        viewModelScope.launch {
+            radicalRepository
+                .getRadicalByLiteral(radicalLiteral)
+                .collect { requestState ->
+                    _radicalDetailState.value = when (requestState) {
+                        RequestState.Loading -> RadicalDetailState.Loading
+
+                        is RequestResult.Success -> RadicalDetailState.Data(
+                            radical = requestState.data
+                        )
+
+                        is RequestResult.Error -> RadicalDetailState.Error
+                    }
+                }
+        }
+    }
+
+    fun onDismissRadical() {
+        _radicalDetailState.value = null
     }
 }

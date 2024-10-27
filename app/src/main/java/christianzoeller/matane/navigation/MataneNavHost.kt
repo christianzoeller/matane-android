@@ -9,6 +9,8 @@ import christianzoeller.matane.MataneAppState
 import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.feature.dictionary.kanji.KanjiScreen
 import christianzoeller.matane.feature.dictionary.kanji.KanjiViewModel
+import christianzoeller.matane.feature.dictionary.radical.RadicalScreen
+import christianzoeller.matane.feature.dictionary.radical.RadicalViewModel
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
 import christianzoeller.matane.feature.settings.SettingsScreen
 import christianzoeller.matane.feature.settings.acknowledgements.AcknowledgementsScreen
@@ -28,10 +30,13 @@ fun MataneNavHost(
         ) {
             composable<Destination.Search> {
                 SearchScreen(
-                    onMostFrequentKanjiCardClick = {
+                    onKanjiCardClick = {
                         appState.navigate(
                             Destination.Kanji(KanjiListType.ByFrequency)
                         )
+                    },
+                    onRadicalCardClick = {
+                        appState.navigate(Destination.Radical)
                     }
                 )
             }
@@ -40,6 +45,15 @@ fun MataneNavHost(
                 val viewModel = hiltViewModel<KanjiViewModel>()
 
                 KanjiScreen(
+                    viewModel = viewModel,
+                    onNavigateUp = { appState.navigateUp() }
+                )
+            }
+
+            composable<Destination.Radical> {
+                val viewModel = hiltViewModel<RadicalViewModel>()
+
+                RadicalScreen(
                     viewModel = viewModel,
                     onNavigateUp = { appState.navigateUp() }
                 )

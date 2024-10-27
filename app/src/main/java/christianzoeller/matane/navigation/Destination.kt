@@ -13,6 +13,9 @@ sealed interface Destination {
     ) : Destination
 
     @Serializable
+    data object Radical : Destination
+
+    @Serializable
     data object Settings : Destination
 
     @Serializable

@@ -56,4 +56,19 @@
 	<string name="kanji_list_item_taught_in_grade_six">Taught in sixth grade</string>
 	<string name="kanji_list_item_taught_in_junior_high">Taught in Junior High School</string>
 	<string name="kanji_list_item_name_kanji_taught_in_junior_high">Name kanji taught in Junior High School</string>
+	<string name="radical_list_item_contained_in_kanji">Contained in %1$d kanji</string>
+	<string name="radical_list_item_stroke_count">%1$d strokes</string>
+	<string name="radical_detail_empty_disclaimer">Select one of the radicals in the list to find out more about it.</string>
+	<string name="radical_error_disclaimer">An unexpected error occurred.</string>
+	<string name="radical_detail_contained_in_kanji">This radical is contained in %1$d kanji. You can click on them to find out more about them.</string>
+	<string name="radical_detail_stroke_count">Drawn with %1$d strokes.</string>
+	<string name="radical_header">Radicals</string>
+	<string name="search_header">Dictionary</string>
+	<string name="search_browse_header">Browse</string>
+	<string name="search_browse_most_frequent_kanji_header">Most frequently used kanji</string>
+	<string name="search_browse_radical_header">Radicals</string>
+	<string name="search_browse_radical_description">Take a look at the components that make up kanji. While there are literally thousands of different kanji, there are only a bit more than 200 radicals.</string>
+	<string name="search_browse_most_frequent_kanji_description">Scroll through a list of the 2,500 most frequently used kanji. The frequency is determined with regard to how often they appear in newspapers. So the more of them you know, the easier you can pick up a Japanese newspaper and start reading.</string>
+	<string name="search_browse_cta">Take me there</string>
+	<string name="radical_detail_contained_in_kanji_not_clickable">This radical is contained in %1$d kanji.</string>
 </resources>

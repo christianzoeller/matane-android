@@ -3,7 +3,6 @@ package christianzoeller.matane.feature.dictionary.kanji.model
 import christianzoeller.matane.data.dictionary.model.CodePoint
 import christianzoeller.matane.data.dictionary.model.CodePointType
 import christianzoeller.matane.data.dictionary.model.Kanji
-import christianzoeller.matane.data.dictionary.model.Radical
 import christianzoeller.matane.data.dictionary.model.RadicalType
 import christianzoeller.matane.data.dictionary.model.kanji.DictionaryReference
 import christianzoeller.matane.data.dictionary.model.kanji.DictionaryType
@@ -12,6 +11,7 @@ import christianzoeller.matane.data.dictionary.model.kanji.Meaning
 import christianzoeller.matane.data.dictionary.model.kanji.Misc
 import christianzoeller.matane.data.dictionary.model.kanji.QueryCode
 import christianzoeller.matane.data.dictionary.model.kanji.QueryCodeType
+import christianzoeller.matane.data.dictionary.model.kanji.Radical
 import christianzoeller.matane.data.dictionary.model.kanji.Reading
 import christianzoeller.matane.data.dictionary.model.kanji.ReadingMeaning
 import christianzoeller.matane.data.dictionary.model.kanji.ReadingMeaningGroup
