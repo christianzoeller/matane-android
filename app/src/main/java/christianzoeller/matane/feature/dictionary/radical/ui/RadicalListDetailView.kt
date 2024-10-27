@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
 
-package christianzoeller.matane.feature.dictionary.kanji.ui
+package christianzoeller.matane.feature.dictionary.radical.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,29 +18,25 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
-import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
-import christianzoeller.matane.feature.dictionary.kanji.KanjiLiteral
-import christianzoeller.matane.feature.dictionary.kanji.KanjiOverviewState
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMocks
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
-import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
+import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
+import christianzoeller.matane.feature.dictionary.radical.RadicalLiteral
+import christianzoeller.matane.feature.dictionary.radical.RadicalOverviewState
+import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
+import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 
 @Composable
-fun KanjiListDetailView(
-    overviewData: KanjiOverviewState.Content,
-    detailState: KanjiDetailState,
-    onListTypeChange: (KanjiListType) -> Unit,
-    onKanjiClick: (KanjiLiteral) -> Unit,
+fun RadicalListDetailView(
+    overviewData: RadicalOverviewState.Content,
+    detailState: RadicalDetailState,
+    onRadicalClick: (RadicalLiteral) -> Unit,
     onLoadMore: () -> Unit,
-    onRadicalClick: (String) -> Unit,
+    onKanjiClick: (String) -> Unit,
     contentPadding: PaddingValues,
-    listDetailNavigator: ThreePaneScaffoldNavigator<KanjiLiteral> = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
+    listDetailNavigator: ThreePaneScaffoldNavigator<RadicalLiteral> = rememberListDetailPaneScaffoldNavigator<RadicalLiteral>()
 ) {
     BackHandler(listDetailNavigator.canNavigateBack()) {
         listDetailNavigator.navigateBack()
@@ -52,13 +48,12 @@ fun KanjiListDetailView(
         value = listDetailNavigator.scaffoldValue,
         listPane = {
             AnimatedPane {
-                KanjiList(
+                RadicalList(
                     data = overviewData,
                     listState = listState,
-                    onListTypeChange = onListTypeChange,
-                    onKanjiClick = { kanji ->
-                        onKanjiClick(kanji)
-                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, kanji)
+                    onRadicalClick = { radical ->
+                        onRadicalClick(radical)
+                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, radical)
                     },
                     onLoadMore = onLoadMore
                 )
@@ -72,23 +67,23 @@ fun KanjiListDetailView(
 
             AnimatedPane {
                 when (detailState) {
-                    KanjiDetailState.NoSelection -> KanjiDetailEmpty(contentModifier)
+                    RadicalDetailState.NoSelection -> RadicalDetailEmpty(contentModifier)
 
-                    is KanjiDetailState.Loading -> KanjiDetail(
+                    is RadicalDetailState.Loading -> RadicalDetail(
                         data = detailState,
                         isLoading = true,
-                        onRadicalClick = {},
+                        onKanjiClick = {},
                         modifier = contentModifier
                     )
 
-                    is KanjiDetailState.Data -> KanjiDetail(
+                    is RadicalDetailState.Data -> RadicalDetail(
                         data = detailState,
                         isLoading = false,
-                        onRadicalClick = onRadicalClick,
+                        onKanjiClick = onKanjiClick,
                         modifier = contentModifier
                     )
 
-                    KanjiDetailState.Error -> KanjiDetailError(contentModifier)
+                    RadicalDetailState.Error -> RadicalDetailError(contentModifier)
                 }
             }
         },
@@ -100,16 +95,13 @@ fun KanjiListDetailView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
-    KanjiListDetailView(
-        overviewData = KanjiOverviewState.Loading(
-            listType = KanjiListType.ByFrequency
-        ),
-        detailState = KanjiDetailState.Loading,
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
+private fun RadicalListDetailView_Loading_Preview() = MataneTheme {
+    RadicalListDetailView(
+        overviewData = RadicalOverviewState.Loading,
+        detailState = RadicalDetailState.Loading,
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         contentPadding = PaddingValues()
     )
 }
@@ -118,25 +110,22 @@ private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Content_Preview() = MataneTheme {
-    KanjiListDetailView(
-        overviewData = KanjiOverviewState.Data(
-            kanjiList = List(10) { index ->
-                KanjiListItemModel(
-                    kanji = KanjiInContextMocks.umi.copy(id = index),
+private fun RadicalListDetailView_Content_Preview() = MataneTheme {
+    RadicalListDetailView(
+        overviewData = RadicalOverviewState.Data(
+            radicals = List(10) { index ->
+                RadicalListItemModel(
+                    radical = RadicalMocks.default.copy(id = index),
                     isLoading = false
                 )
-            },
-            listType = KanjiListType.ByFrequency
+            }
         ),
-        detailState = KanjiDetailState.Data(
-            kanji = KanjiMocks.sortOfThing,
-            radicals = RadicalInKanjiMocks.sortOfThingRadicals
+        detailState = RadicalDetailState.Data(
+            radical = RadicalMocks.default,
         ),
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         contentPadding = PaddingValues()
     )
 }
@@ -145,22 +134,20 @@ private fun KanjiListDetailView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Error_Preview() = MataneTheme {
-    KanjiListDetailView(
-        overviewData = KanjiOverviewState.Data(
-            kanjiList = List(10) { index ->
-                KanjiListItemModel(
-                    kanji = KanjiInContextMocks.umi.copy(id = index),
+private fun RadicalListDetailView_Error_Preview() = MataneTheme {
+    RadicalListDetailView(
+        overviewData = RadicalOverviewState.Data(
+            radicals = List(10) { index ->
+                RadicalListItemModel(
+                    radical = RadicalMocks.default.copy(id = index),
                     isLoading = false
                 )
-            },
-            listType = KanjiListType.ByFrequency
+            }
         ),
-        detailState = KanjiDetailState.Error,
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
+        detailState = RadicalDetailState.Error,
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         contentPadding = PaddingValues()
     )
 }

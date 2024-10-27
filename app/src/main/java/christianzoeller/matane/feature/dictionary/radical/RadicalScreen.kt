@@ -1,4 +1,4 @@
-package christianzoeller.matane.feature.dictionary.kanji
+package christianzoeller.matane.feature.dictionary.radical
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,57 +23,54 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMocks
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
-import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
-import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
-import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiListDetailView
-import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
-import christianzoeller.matane.feature.dictionary.radical.ui.RadicalDetail
-import christianzoeller.matane.feature.dictionary.radical.ui.RadicalDetailError
+import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
+import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiDetail
+import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiDetailError
+import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
+import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
+import christianzoeller.matane.feature.dictionary.radical.ui.RadicalListDetailView
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KanjiScreen(
-    viewModel: KanjiViewModel,
+fun RadicalScreen(
+    viewModel: RadicalViewModel,
     onNavigateUp: () -> Unit
 ) {
     val overviewState by viewModel.overviewState.collectAsStateWithLifecycle()
     val detailState by viewModel.detailState.collectAsStateWithLifecycle()
-    val radicalDetailState by viewModel.radicalDetailState.collectAsStateWithLifecycle()
+    val kanjiDetailState by viewModel.kanjiDetailState.collectAsStateWithLifecycle()
 
-    KanjiScreen(
+    RadicalScreen(
         overviewState = overviewState,
         detailState = detailState,
-        onListTypeChange = viewModel::onListTypeChange,
-        onKanjiClick = viewModel::onKanjiClick,
-        onLoadMore = viewModel::onLoadMore,
         onRadicalClick = viewModel::onRadicalClick,
+        onLoadMore = viewModel::onLoadMore,
+        onKanjiClick = viewModel::onKanjiClick,
         onNavigateUp = onNavigateUp
     )
 
-    when (val radicalState = radicalDetailState) {
-        is RadicalDetailState.Content, is RadicalDetailState.Error -> {
+    when (val kanjiState = kanjiDetailState) {
+        is KanjiDetailState.Content, is KanjiDetailState.Error -> {
             ModalBottomSheet(
-                onDismissRequest = viewModel::onDismissRadical,
+                onDismissRequest = viewModel::onDismissKanji,
                 sheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
                 )
             ) {
-                if (radicalState is RadicalDetailState.Content) {
-                    RadicalDetail(
-                        data = radicalState,
-                        isLoading = radicalState is RadicalDetailState.Loading,
-                        onKanjiClick = null,
+                if (kanjiState is KanjiDetailState.Content) {
+                    KanjiDetail(
+                        data = kanjiState,
+                        isLoading = kanjiState is KanjiDetailState.Loading,
+                        onRadicalClick = null,
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
                             .padding(16.dp)
                     )
                 } else {
-                    RadicalDetailError(modifier = Modifier.padding(16.dp))
+                    KanjiDetailError(modifier = Modifier.padding(16.dp))
                 }
             }
         }
@@ -84,16 +81,15 @@ fun KanjiScreen(
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-private fun KanjiScreen(
-    overviewState: KanjiOverviewState,
-    detailState: KanjiDetailState,
-    onListTypeChange: (KanjiListType) -> Unit,
-    onKanjiClick: (KanjiLiteral) -> Unit,
+private fun RadicalScreen(
+    overviewState: RadicalOverviewState,
+    detailState: RadicalDetailState,
+    onRadicalClick: (RadicalLiteral) -> Unit,
     onLoadMore: () -> Unit,
-    onRadicalClick: (String) -> Unit,
+    onKanjiClick: (String) -> Unit,
     onNavigateUp: () -> Unit,
 ) {
-    val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
+    val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<RadicalLiteral>()
 
     Scaffold(
         topBar = {
@@ -106,23 +102,22 @@ private fun KanjiScreen(
 
                     }
                 },
-                title = R.string.kanji_header
+                title = R.string.radical_header
             )
         }
     ) { contentPadding ->
         when (overviewState) {
-            is KanjiOverviewState.Content -> KanjiListDetailView(
+            is RadicalOverviewState.Content -> RadicalListDetailView(
                 overviewData = overviewState,
                 detailState = detailState,
-                onListTypeChange = onListTypeChange,
-                onKanjiClick = onKanjiClick,
-                onLoadMore = onLoadMore,
                 onRadicalClick = onRadicalClick,
+                onLoadMore = onLoadMore,
+                onKanjiClick = onKanjiClick,
                 contentPadding = contentPadding,
                 listDetailNavigator = listDetailNavigator
             )
 
-            is KanjiOverviewState.Error -> ErrorView(contentPadding)
+            is RadicalOverviewState.Error -> ErrorView(contentPadding)
         }
     }
 }
@@ -136,7 +131,7 @@ private fun ErrorView(contentPadding: PaddingValues) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(id = R.string.kanji_error_disclaimer),
+            text = stringResource(id = R.string.radical_error_disclaimer),
             textAlign = TextAlign.Center,
             style = typography.titleMedium
         )
@@ -146,57 +141,48 @@ private fun ErrorView(contentPadding: PaddingValues) {
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Loading_Preview() = MataneTheme {
-    KanjiScreen(
-        overviewState = KanjiOverviewState.Loading(
-            listType = KanjiListType.ByFrequency
-        ),
-        detailState = KanjiDetailState.NoSelection,
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
+private fun RadicalScreen_Loading_Preview() = MataneTheme {
+    RadicalScreen(
+        overviewState = RadicalOverviewState.Loading,
+        detailState = RadicalDetailState.NoSelection,
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         onNavigateUp = {}
     )
 }
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Content_Preview() = MataneTheme {
-    KanjiScreen(
-        overviewState = KanjiOverviewState.Data(
-            kanjiList = List(10) { index ->
-                KanjiListItemModel(
-                    kanji = KanjiInContextMocks.umi.copy(id = index),
+private fun RadicalScreen_Content_Preview() = MataneTheme {
+    RadicalScreen(
+        overviewState = RadicalOverviewState.Data(
+            radicals = List(10) { index ->
+                RadicalListItemModel(
+                    radical = RadicalMocks.default.copy(id = index),
                     isLoading = false
                 )
-            },
-            listType = KanjiListType.ByFrequency
+            }
         ),
-        detailState = KanjiDetailState.Data(
-            kanji = KanjiMocks.sortOfThing,
-            radicals = RadicalInKanjiMocks.sortOfThingRadicals
+        detailState = RadicalDetailState.Data(
+            radical = RadicalMocks.default
         ),
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         onNavigateUp = {}
     )
 }
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Error_Preview() = MataneTheme {
-    KanjiScreen(
-        overviewState = KanjiOverviewState.Error(
-            listType = KanjiListType.ByFrequency
-        ),
-        detailState = KanjiDetailState.Error,
-        onListTypeChange = {},
-        onKanjiClick = {},
-        onLoadMore = {},
+private fun RadicalScreen_Error_Preview() = MataneTheme {
+    RadicalScreen(
+        overviewState = RadicalOverviewState.Error,
+        detailState = RadicalDetailState.Error,
         onRadicalClick = {},
+        onLoadMore = {},
+        onKanjiClick = {},
         onNavigateUp = {}
     )
 }

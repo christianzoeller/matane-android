@@ -22,7 +22,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -183,7 +182,7 @@ private fun KanjiListItem(
                 modifier = Modifier
                     .size(40.dp)
                     .background(
-                        color = colorScheme.secondaryContainer,
+                        color = colorScheme.primaryContainer,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -192,9 +191,9 @@ private fun KanjiListItem(
                     text = kanji.literal,
                     modifier = Modifier.placeholder(
                         visible = isLoading,
-                        color = colorScheme.secondaryContainer
+                        color = colorScheme.primaryContainer
                     ),
-                    color = contentColorFor(colorScheme.secondaryContainer)
+                    color = colorScheme.onPrimaryContainer
                 )
             }
         },

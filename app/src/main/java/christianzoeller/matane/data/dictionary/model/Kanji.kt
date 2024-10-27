@@ -3,6 +3,7 @@ package christianzoeller.matane.data.dictionary.model
 import christianzoeller.matane.data.dictionary.model.kanji.DictionaryReference
 import christianzoeller.matane.data.dictionary.model.kanji.QueryCode
 import christianzoeller.matane.data.dictionary.model.kanji.Misc
+import christianzoeller.matane.data.dictionary.model.kanji.Radical as KanjiRadical
 import christianzoeller.matane.data.dictionary.model.kanji.ReadingMeaning
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,7 +17,7 @@ data class Kanji(
     @SerialName("CodePoints")
     val codePoints: List<CodePoint>,
     @SerialName("Radicals")
-    val radicals: List<Radical>,
+    val radicals: List<KanjiRadical>,
     @SerialName("Misc")
     val misc: Misc,
     @SerialName("DictionaryReferences")
@@ -53,13 +54,7 @@ enum class CodePointType {
     Ucs
 }
 
-@Serializable
-data class Radical(
-    @SerialName("Type")
-    val type: RadicalType,
-    @SerialName("Value")
-    val value: Int
-)
+
 
 @Serializable
 enum class RadicalType {

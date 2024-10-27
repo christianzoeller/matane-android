@@ -14,7 +14,9 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,6 +46,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 fun KanjiDetail(
     data: KanjiDetailState.Content,
     isLoading: Boolean,
+    onRadicalClick: ((String) -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -75,7 +78,8 @@ fun KanjiDetail(
         Spacer(modifier = Modifier.height(32.dp))
         RadicalSection(
             radicals = data.radicals,
-            isLoading = isLoading
+            isLoading = isLoading,
+            onRadicalClick = onRadicalClick
         )
     }
 }
@@ -185,6 +189,7 @@ private fun ReadingMeaningGroup(
 private fun RadicalSection(
     radicals: List<RadicalInKanji>,
     isLoading: Boolean,
+    onRadicalClick: ((String) -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     var showInfoSheet by rememberSaveable { mutableStateOf(false) }
@@ -212,11 +217,10 @@ private fun RadicalSection(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             radicals.forEach { radical ->
-                Text(
-                    text = radical.literal,
-                    modifier = Modifier.placeholder(visible = isLoading),
-                    color = colorScheme.secondary,
-                    style = typography.headlineMedium
+                RadicalTile(
+                    radical = radical.literal,
+                    isLoading = isLoading,
+                    onRadicalClick = onRadicalClick
                 )
             }
         }
@@ -236,6 +240,50 @@ private fun RadicalSection(
     }
 }
 
+@Composable
+private fun RadicalTile(
+    radical: String,
+    isLoading: Boolean,
+    onRadicalClick: ((String) -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    when (onRadicalClick) {
+        null -> {
+            Surface(
+                modifier = modifier,
+                shape = shapes.medium,
+                color = colorScheme.surfaceContainer
+            ) {
+                Text(
+                    text = radical,
+                    modifier = Modifier
+                        .placeholder(visible = isLoading)
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    style = typography.headlineMedium
+                )
+            }
+        }
+
+        else -> {
+            Surface(
+                onClick = { onRadicalClick(radical) },
+                modifier = modifier,
+                enabled = !isLoading,
+                shape = shapes.medium,
+                color = colorScheme.primaryContainer,
+            ) {
+                Text(
+                    text = radical,
+                    modifier = Modifier
+                        .placeholder(visible = isLoading)
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    style = typography.headlineMedium
+                )
+            }
+        }
+    }
+}
+
 @CompactPreview
 @Composable
 private fun KanjiDetail_Preview() = MataneTheme {
@@ -245,6 +293,21 @@ private fun KanjiDetail_Preview() = MataneTheme {
             radicals = RadicalInKanjiMocks.sortOfThingRadicals
         ),
         isLoading = false,
+        onRadicalClick = {},
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@CompactPreview
+@Composable
+private fun KanjiDetail_NotClickable_Preview() = MataneTheme {
+    KanjiDetail(
+        data = KanjiDetailState.Data(
+            kanji = KanjiMocks.sortOfThing,
+            radicals = RadicalInKanjiMocks.sortOfThingRadicals
+        ),
+        isLoading = false,
+        onRadicalClick = null,
         modifier = Modifier.padding(16.dp)
     )
 }
@@ -258,6 +321,7 @@ private fun KanjiDetail_Loading_Preview() = MataneTheme {
             radicals = RadicalInKanjiMocks.sortOfThingRadicals
         ),
         isLoading = true,
+        onRadicalClick = {},
         modifier = Modifier.padding(16.dp)
     )
 }
