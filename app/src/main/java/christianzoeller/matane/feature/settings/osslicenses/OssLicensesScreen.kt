@@ -1,11 +1,9 @@
 package christianzoeller.matane.feature.settings.osslicenses
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
@@ -49,40 +47,35 @@ private fun OssLicensesScreen(
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
 
-    Scaffold(
-        topBar = {
-            DefaultTopAppBar(
-                onNavigateUp = {
-                    if (listDetailNavigator.canNavigateBack()) {
-                        listDetailNavigator.navigateBack()
-                    } else {
-                        onNavigateUp()
-                    }
-                },
-                title = R.string.oss_licenses_header
-            )
-        }
-    ) { contentPadding ->
+    Column {
+        DefaultTopAppBar(
+            onNavigateUp = {
+                if (listDetailNavigator.canNavigateBack()) {
+                    listDetailNavigator.navigateBack()
+                } else {
+                    onNavigateUp()
+                }
+            },
+            title = R.string.oss_licenses_header
+        )
+
         when (overviewState) {
             is OssLicensesOverviewState.Content -> OssLicensesListDetailView(
                 overviewData = overviewState,
                 detailState = detailState,
                 onLibraryClick = onLibraryClick,
-                contentPadding = contentPadding,
                 listDetailNavigator = listDetailNavigator
             )
 
-            OssLicensesOverviewState.Error -> ErrorView(contentPadding)
+            OssLicensesOverviewState.Error -> ErrorView()
         }
     }
 }
 
 @Composable
-private fun ErrorView(contentPadding: PaddingValues) {
+private fun ErrorView() {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(contentPadding),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(

@@ -3,7 +3,6 @@
 package christianzoeller.matane.feature.dictionary.radical.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -35,7 +34,6 @@ fun RadicalListDetailView(
     onRadicalClick: (RadicalLiteral) -> Unit,
     onLoadMore: () -> Unit,
     onKanjiClick: (String) -> Unit,
-    contentPadding: PaddingValues,
     listDetailNavigator: ThreePaneScaffoldNavigator<RadicalLiteral> = rememberListDetailPaneScaffoldNavigator<RadicalLiteral>()
 ) {
     BackHandler(listDetailNavigator.canNavigateBack()) {
@@ -86,8 +84,7 @@ fun RadicalListDetailView(
                     RadicalDetailState.Error -> RadicalDetailError(contentModifier)
                 }
             }
-        },
-        modifier = Modifier.padding(contentPadding)
+        }
     )
 }
 
@@ -101,8 +98,7 @@ private fun RadicalListDetailView_Loading_Preview() = MataneTheme {
         detailState = RadicalDetailState.Loading,
         onRadicalClick = {},
         onLoadMore = {},
-        onKanjiClick = {},
-        contentPadding = PaddingValues()
+        onKanjiClick = {}
     )
 }
 
@@ -125,8 +121,7 @@ private fun RadicalListDetailView_Content_Preview() = MataneTheme {
         ),
         onRadicalClick = {},
         onLoadMore = {},
-        onKanjiClick = {},
-        contentPadding = PaddingValues()
+        onKanjiClick = {}
     )
 }
 
@@ -147,7 +142,6 @@ private fun RadicalListDetailView_Error_Preview() = MataneTheme {
         detailState = RadicalDetailState.Error,
         onRadicalClick = {},
         onLoadMore = {},
-        onKanjiClick = {},
-        contentPadding = PaddingValues()
+        onKanjiClick = {}
     )
 }

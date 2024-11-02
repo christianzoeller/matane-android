@@ -15,14 +15,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
+import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 
@@ -32,18 +31,15 @@ fun SettingsScreen(
     onAcknowledgementsClick: () -> Unit,
     onOssLicenseClick: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.settings_header)) }
-            )
-        }
-    ) { contentPadding ->
+    Column {
+        DefaultTopAppBar(
+            onNavigateUp = null,
+            title = R.string.settings_header
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(contentPadding),
         ) {
             Spacer(modifier = Modifier.height(48.dp))
             Text(

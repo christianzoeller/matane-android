@@ -1,10 +1,26 @@
 package christianzoeller.matane
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
@@ -13,12 +29,17 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import christianzoeller.matane.navigation.MataneNavHost
 import christianzoeller.matane.navigation.TopLevelDestination
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MataneApp(
     appState: MataneAppState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo()
 ) {
     val currentDestination = appState.currentDestination
+    val layoutType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+        adaptiveInfo = windowAdaptiveInfo
+    )
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -36,11 +57,30 @@ fun MataneApp(
                 )
             }
         },
-        modifier = modifier
+        layoutType = layoutType
     ) {
-        MataneNavHost(
-            appState = appState
-        )
+        Scaffold(
+            modifier = modifier,
+            containerColor = Color.Transparent,
+            contentColor = colorScheme.onBackground,
+            contentWindowInsets = WindowInsets(0, 0, 0 , 0)
+        ) { padding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .consumeWindowInsets(padding)
+                    .windowInsetsPadding(
+                        insets = WindowInsets.safeDrawing.only(
+                            sides = WindowInsetsSides.Horizontal
+                        )
+                    )
+            ) {
+                MataneNavHost(
+                    appState = appState
+                )
+            }
+        }
     }
 }
 
