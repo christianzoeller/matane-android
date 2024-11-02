@@ -3,7 +3,6 @@
 package christianzoeller.matane.feature.dictionary.kanji.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -39,7 +38,6 @@ fun KanjiListDetailView(
     onKanjiClick: (KanjiLiteral) -> Unit,
     onLoadMore: () -> Unit,
     onRadicalClick: (String) -> Unit,
-    contentPadding: PaddingValues,
     listDetailNavigator: ThreePaneScaffoldNavigator<KanjiLiteral> = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
 ) {
     BackHandler(listDetailNavigator.canNavigateBack()) {
@@ -91,8 +89,7 @@ fun KanjiListDetailView(
                     KanjiDetailState.Error -> KanjiDetailError(contentModifier)
                 }
             }
-        },
-        modifier = Modifier.padding(contentPadding)
+        }
     )
 }
 
@@ -109,8 +106,7 @@ private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
         onListTypeChange = {},
         onKanjiClick = {},
         onLoadMore = {},
-        onRadicalClick = {},
-        contentPadding = PaddingValues()
+        onRadicalClick = {}
     )
 }
 
@@ -136,8 +132,7 @@ private fun KanjiListDetailView_Content_Preview() = MataneTheme {
         onListTypeChange = {},
         onKanjiClick = {},
         onLoadMore = {},
-        onRadicalClick = {},
-        contentPadding = PaddingValues()
+        onRadicalClick = {}
     )
 }
 
@@ -160,7 +155,6 @@ private fun KanjiListDetailView_Error_Preview() = MataneTheme {
         onListTypeChange = {},
         onKanjiClick = {},
         onLoadMore = {},
-        onRadicalClick = {},
-        contentPadding = PaddingValues()
+        onRadicalClick = {}
     )
 }

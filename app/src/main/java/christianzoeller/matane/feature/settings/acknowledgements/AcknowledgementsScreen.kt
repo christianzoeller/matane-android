@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,23 +24,19 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 fun AcknowledgementsScreen(
     onNavigateUp: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            DefaultTopAppBar(
-                onNavigateUp = onNavigateUp,
-                title = R.string.acknowledgements_header
-            )
-        }
-    ) { contentPadding ->
+    Column {
+        DefaultTopAppBar(
+            onNavigateUp = onNavigateUp,
+            title = R.string.acknowledgements_header
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(contentPadding)
                 .padding(
                     start = 16.dp, end = 16.dp,
                     top = 24.dp, bottom = 32.dp
-                ),
+                )
         ) {
             Text(text = stringResource(id = R.string.acknowledgments_intro))
             Spacer(modifier = Modifier.height(24.dp))

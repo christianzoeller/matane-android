@@ -1,15 +1,19 @@
 package christianzoeller.matane.feature.dictionary.kanji
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
@@ -61,6 +65,11 @@ fun KanjiScreen(
                 onDismissRequest = viewModel::onDismissRadical,
                 sheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
+                ),
+                modifier = Modifier.windowInsetsPadding(
+                    insets = WindowInsets.safeDrawing.only(
+                        sides = WindowInsetsSides.Top
+                    )
                 )
             ) {
                 if (radicalState is RadicalDetailState.Content) {
@@ -95,21 +104,19 @@ private fun KanjiScreen(
 ) {
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
 
-    Scaffold(
-        topBar = {
-            DefaultTopAppBar(
-                onNavigateUp = {
-                    if (listDetailNavigator.canNavigateBack()) {
-                        listDetailNavigator.navigateBack()
-                    } else {
-                        onNavigateUp()
+    Column {
+        DefaultTopAppBar(
+            onNavigateUp = {
+                if (listDetailNavigator.canNavigateBack()) {
+                    listDetailNavigator.navigateBack()
+                } else {
+                    onNavigateUp()
 
-                    }
-                },
-                title = R.string.kanji_header
-            )
-        }
-    ) { contentPadding ->
+                }
+            },
+            title = R.string.kanji_header
+        )
+
         when (overviewState) {
             is KanjiOverviewState.Content -> KanjiListDetailView(
                 overviewData = overviewState,
@@ -118,21 +125,18 @@ private fun KanjiScreen(
                 onKanjiClick = onKanjiClick,
                 onLoadMore = onLoadMore,
                 onRadicalClick = onRadicalClick,
-                contentPadding = contentPadding,
                 listDetailNavigator = listDetailNavigator
             )
 
-            is KanjiOverviewState.Error -> ErrorView(contentPadding)
+            is KanjiOverviewState.Error -> ErrorView()
         }
     }
 }
 
 @Composable
-private fun ErrorView(contentPadding: PaddingValues) {
+private fun ErrorView() {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(contentPadding),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(

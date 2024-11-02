@@ -3,7 +3,6 @@
 package christianzoeller.matane.feature.settings.osslicenses.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,7 +31,6 @@ fun OssLicensesListDetailView(
     overviewData: OssLicensesOverviewState.Content,
     detailState: OssLicensesDetailState,
     onLibraryClick: (LibraryOverview) -> Unit,
-    contentPadding: PaddingValues,
     listDetailNavigator: ThreePaneScaffoldNavigator<LibraryOverview> = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
 ) {
     BackHandler(listDetailNavigator.canNavigateBack()) {
@@ -74,8 +72,7 @@ fun OssLicensesListDetailView(
                     is OssLicensesDetailState.Error -> OssLicensesDetailError(contentModifier)
                 }
             }
-        },
-        modifier = Modifier.padding(contentPadding)
+        }
     )
 }
 
@@ -87,8 +84,7 @@ private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
     OssLicensesListDetailView(
         overviewData = OssLicensesOverviewState.Loading,
         detailState = OssLicensesDetailState.NoSelection,
-        onLibraryClick = {},
-        contentPadding = PaddingValues()
+        onLibraryClick = {}
     )
 }
 
@@ -105,8 +101,7 @@ private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
             library = OssLicenseInfoMocks.library,
             licenses = listOf(OssLicenseInfoMocks.license)
         ),
-        onLibraryClick = {},
-        contentPadding = PaddingValues()
+        onLibraryClick = {}
     )
 }
 
@@ -120,7 +115,6 @@ private fun OssLicensesListDetailView_Error_Preview() = MataneTheme {
             ossLicenseInfo = OssLicenseInfoMocks.info
         ),
         detailState = OssLicensesDetailState.Error,
-        onLibraryClick = {},
-        contentPadding = PaddingValues()
+        onLibraryClick = {}
     )
 }
