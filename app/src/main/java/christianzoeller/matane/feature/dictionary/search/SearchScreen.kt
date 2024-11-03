@@ -50,7 +50,7 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(48.dp))
             Text(
                 text = stringResource(id = R.string.search_browse_header),
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 style = typography.titleLarge
             )
             Spacer(modifier = Modifier.height(32.dp))
