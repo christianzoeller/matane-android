@@ -15,6 +15,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
@@ -22,6 +23,7 @@ import christianzoeller.matane.feature.dictionary.radical.RadicalLiteral
 import christianzoeller.matane.feature.dictionary.radical.RadicalOverviewState
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
+import christianzoeller.matane.ui.extensions.scrollToTop
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
@@ -41,6 +43,8 @@ fun RadicalListDetailView(
     }
 
     val listState = rememberLazyListState()
+    val detailScrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -52,6 +56,7 @@ fun RadicalListDetailView(
                     onRadicalClick = { radical ->
                         onRadicalClick(radical)
                         listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, radical)
+                        detailScrollState.scrollToTop(coroutineScope)
                     },
                     onLoadMore = onLoadMore
                 )
@@ -59,7 +64,7 @@ fun RadicalListDetailView(
         },
         detailPane = {
             val contentModifier = Modifier
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(detailScrollState)
                 .fillMaxSize()
                 .padding(horizontal = 24.dp, vertical = 16.dp)
 

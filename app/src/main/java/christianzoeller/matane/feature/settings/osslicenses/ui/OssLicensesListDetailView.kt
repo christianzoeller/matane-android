@@ -15,12 +15,14 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.feature.settings.osslicenses.LibraryOverview
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesDetailState
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesOverviewState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
+import christianzoeller.matane.ui.extensions.scrollToTop
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
@@ -38,6 +40,8 @@ fun OssLicensesListDetailView(
     }
 
     val listState = rememberLazyListState()
+    val detailScrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -50,13 +54,14 @@ fun OssLicensesListDetailView(
                     onLibraryClick = { library ->
                         onLibraryClick(library)
                         listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
+                        detailScrollState.scrollToTop(coroutineScope)
                     }
                 )
             }
         },
         detailPane = {
             val contentModifier = Modifier
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(detailScrollState)
                 .fillMaxSize()
                 .padding(horizontal = 24.dp, vertical = 16.dp)
 
