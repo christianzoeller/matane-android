@@ -37,7 +37,7 @@ class RadicalViewModel @Inject constructor(
         viewModelScope.launch {
             overviewState.collect {
                 _detailState.value = when (it) {
-                    is RadicalOverviewState.Loading -> RadicalDetailState.Loading
+                    is RadicalOverviewState.Loading -> RadicalDetailState.NoSelection
                     is RadicalOverviewState.Data -> _detailState.value
                     is RadicalOverviewState.LoadingMore -> _detailState.value
                     is RadicalOverviewState.Error -> RadicalDetailState.Error
