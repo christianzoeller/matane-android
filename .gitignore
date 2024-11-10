@@ -4,6 +4,7 @@
 .idea/*
 !.idea/codeStyles
 !.idea/dictionaries
+!.idea/fileTemplates
 !.idea/inspectionProfiles
 .DS_Store
 /build

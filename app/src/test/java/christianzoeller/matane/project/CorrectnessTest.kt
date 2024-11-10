@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import christianzoeller.matane.project.extensions.composableFunctions
+import christianzoeller.matane.project.extensions.defaultScope
 import christianzoeller.matane.project.extensions.previewComposableFunctions
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
@@ -13,7 +14,7 @@ import org.junit.Test
 class CorrectnessTest {
     @Test
     fun `preview composables are private`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .previewComposableFunctions()
             .assertTrue { function -> function.hasPrivateModifier }
     }
@@ -30,7 +31,7 @@ class CorrectnessTest {
     @OptIn(ExperimentalMaterial3AdaptiveApi::class)
     @Test
     fun `list-detail screen content composables have a navigator parameter`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .composableFunctions()
             .withNameEndingWith(listDetailScreenContentComposableSuffix)
             .assertTrue { function ->
@@ -54,7 +55,7 @@ class CorrectnessTest {
      */
     @Test
     fun `lists composables used in list-detail screens take a state parameter`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .composableFunctions()
             .withNameEndingWith(listDetailScreenContentComposableListViewSuffix)
             .assertTrue { function ->

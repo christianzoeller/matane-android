@@ -1,0 +1,5 @@
+#set(${STATE_PACKAGE_NAME}=${PACKAGE_NAME})
+#set(${PACKAGE_NAME}="${PACKAGE_NAME}.ui")
+#set(${STATE}="${NAME}State")
+#set(${CONTENT}="${NAME}Content")
+#parse("Content.kt")
