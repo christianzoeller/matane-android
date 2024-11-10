@@ -2,6 +2,7 @@ package christianzoeller.matane.project
 
 import androidx.lifecycle.ViewModel
 import christianzoeller.matane.project.extensions.composableFunctions
+import christianzoeller.matane.project.extensions.defaultScope
 import christianzoeller.matane.project.extensions.previewComposableFunctions
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.ext.list.withAllParentsOf
@@ -15,7 +16,7 @@ class NamingTest {
     fun `top-level screen composables have correct suffix`() {
         // Here, we define top-level screen composables as those
         // composables that have a view model parameter
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .composableFunctions()
             .withParameter { parameter ->
                 parameter.hasType { type -> type.hasNameEndingWith(viewModelSuffix) }
@@ -25,14 +26,14 @@ class NamingTest {
 
     @Test
     fun `preview composables have correct suffix`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .previewComposableFunctions()
             .assertTrue { it.name.endsWith(previewComposableSuffix) }
     }
 
     @Test
     fun `view models have correct suffix`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .classes()
             .withAllParentsOf(ViewModel::class)
             .assertTrue { it.name.endsWith(viewModelSuffix) }
@@ -40,7 +41,7 @@ class NamingTest {
 
     @Test
     fun `repositories have correct suffix`() {
-        Konsist.scopeFromProject()
+        Konsist.defaultScope()
             .classes()
             .withPackage(repositoryPackage)
             .assertTrue { it.name.endsWith(repositorySuffix) }

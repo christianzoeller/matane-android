@@ -1,0 +1,5 @@
+#set(${STATE_PACKAGE_NAME}=${PACKAGE_NAME})
+#set(${PACKAGE_NAME}="${PACKAGE_NAME}.ui")
+#set(${OVERVIEWSTATE}="${NAME}OverviewState")
+#set(${LISTVIEW}="${NAME}List")
+#parse("List-Detail ListView.kt")
