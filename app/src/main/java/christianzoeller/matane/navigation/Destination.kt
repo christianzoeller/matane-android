@@ -19,6 +19,9 @@ sealed interface Destination {
     data object Settings : Destination
 
     @Serializable
+    data object AppearanceSettings : Destination
+
+    @Serializable
     data object Acknowledgements : Destination
 
     @Serializable

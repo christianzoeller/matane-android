@@ -28,6 +28,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    onAppearanceClick: () -> Unit,
     onAcknowledgementsClick: () -> Unit,
     onOssLicenseClick: () -> Unit
 ) {
@@ -42,6 +43,12 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.height(48.dp))
+            SettingsListItem(
+                label = R.string.settings_appearance,
+                onClick = onAppearanceClick,
+                iconDescription = R.string.settings_appearance_icon_description,
+            )
+            Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(id = R.string.settings_about_the_app_section_header),
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -89,6 +96,7 @@ private fun SettingsListItem(
 @Composable
 private fun SettingsScreen_Preview() = MataneTheme {
     SettingsScreen(
+        onAppearanceClick = {},
         onAcknowledgementsClick = {},
         onOssLicenseClick = {}
     )
