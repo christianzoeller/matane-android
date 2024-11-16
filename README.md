@@ -1,5 +1,7 @@
 # Matane
 
+![Screenshot of the app, showing a screen displaying information about kanji](/.gitlab/media/preview.png)
+
 Matane is an app for learning Japanese. It is currently at a very early stage and does not offer
 a lot of functionality yet.
 
