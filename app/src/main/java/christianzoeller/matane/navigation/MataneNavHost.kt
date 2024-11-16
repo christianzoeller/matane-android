@@ -14,6 +14,8 @@ import christianzoeller.matane.feature.dictionary.radical.RadicalViewModel
 import christianzoeller.matane.feature.dictionary.search.SearchScreen
 import christianzoeller.matane.feature.settings.SettingsScreen
 import christianzoeller.matane.feature.settings.acknowledgements.AcknowledgementsScreen
+import christianzoeller.matane.feature.settings.appearance.AppearanceScreen
+import christianzoeller.matane.feature.settings.appearance.AppearanceViewModel
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesScreen
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesViewModel
 
@@ -65,8 +67,18 @@ fun MataneNavHost(
         ) {
             composable<Destination.Settings> {
                 SettingsScreen(
+                    onAppearanceClick = { appState.navigate(Destination.AppearanceSettings) },
                     onAcknowledgementsClick = { appState.navigate(Destination.Acknowledgements) },
                     onOssLicenseClick = { appState.navigate(Destination.OssLicenses) }
+                )
+            }
+
+            composable<Destination.AppearanceSettings> {
+                val viewModel = hiltViewModel<AppearanceViewModel>()
+
+                AppearanceScreen(
+                    viewModel = viewModel,
+                    onNavigateUp = { appState.navigateUp() }
                 )
             }
 

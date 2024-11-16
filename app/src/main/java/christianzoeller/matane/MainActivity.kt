@@ -6,25 +6,48 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import christianzoeller.matane.data.settings.model.UiMode
 import christianzoeller.matane.ui.theme.MataneTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            val darkTheme = isSystemInDarkTheme()
 
-            // Currently not really necessary as we follow the system preference
-            // for dark theme, but becomes necessary once we add a setting to
-            // switch the UI mode
+        var uiMode by mutableStateOf(UiMode.UseSystemSettings)
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiModeState
+                    .onEach { uiMode = it }
+                    .collect()
+            }
+        }
+
+        enableEdgeToEdge()
+
+        setContent {
+            val darkTheme = shouldUseDarkTheme(uiMode)
+
             DisposableEffect(darkTheme) {
                 enableEdgeToEdge(
                     statusBarStyle = SystemBarStyle.auto(
@@ -41,7 +64,9 @@ class MainActivity : ComponentActivity() {
 
             val appState = rememberMataneAppState()
 
-            MataneTheme {
+            MataneTheme(
+                darkTheme = darkTheme
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -50,6 +75,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+private fun shouldUseDarkTheme(
+    uiMode: UiMode,
+): Boolean = when (uiMode) {
+    UiMode.UseLightTheme -> false
+    UiMode.UseDarkTheme -> true
+    UiMode.UseSystemSettings -> isSystemInDarkTheme()
 }
 
 /**

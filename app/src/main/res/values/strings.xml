@@ -71,4 +71,11 @@
 	<string name="search_browse_most_frequent_kanji_description">Scroll through a list of the 2,500 most frequently used kanji. The frequency is determined with regard to how often they appear in newspapers. So the more of them you know, the easier you can pick up a Japanese newspaper and start reading.</string>
 	<string name="search_browse_cta">Take me there</string>
 	<string name="radical_detail_contained_in_kanji_not_clickable">This radical is contained in %1$d kanji.</string>
+	<string name="settings_appearance">Appearance</string>
+	<string name="settings_appearance_icon_description">Go to a screen that allows changing the appearance of the app</string>
+	<string name="settings_appearance_header">Appearance</string>
+	<string name="search_appearance_ui_mode_header">Color scheme</string>
+	<string name="search_appearance_ui_mode_option_light">Light theme</string>
+	<string name="search_appearance_ui_mode_option_dark">Dark theme</string>
+	<string name="search_appearance_ui_mode_option_system">Use system settings</string>
 </resources>
