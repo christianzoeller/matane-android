@@ -2,8 +2,9 @@
 
 ![Screenshot of the app, showing a screen displaying information about kanji](/.gitlab/media/preview.png)
 
-Matane is an app for learning Japanese. It is currently at a very early stage and does not offer
-a lot of functionality yet.
+Matane is a native Android app for learning Japanese. It is built with a focus on supporting
+not only smartphones, but also tablets and foldables as first-class citizens. It is currently
+at a very early stage and does not offer a lot of functionality yet.
 
 Please consider the [issues](https://gitlab.com/christianzoeller/matane-android/-/issues) and
 [milestones](https://gitlab.com/christianzoeller/matane-android/-/milestones) to find out more
