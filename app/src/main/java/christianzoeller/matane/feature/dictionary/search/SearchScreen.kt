@@ -1,192 +1,149 @@
 package christianzoeller.matane.feature.dictionary.search
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.MaterialTheme.shapes
-import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import christianzoeller.matane.feature.dictionary.search.model.VocabularyMocks
 import christianzoeller.matane.R
-import christianzoeller.matane.styleguide.components.DefaultTopAppBar
+import christianzoeller.matane.feature.dictionary.search.ui.SearchBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.feature.dictionary.search.ui.SearchListDetailView
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    onKanjiCardClick: () -> Unit,
-    onRadicalCardClick: () -> Unit
+    viewModel: SearchViewModel,
+    onNavigateUp: () -> Unit
 ) {
-    Column {
-        DefaultTopAppBar(
-            onNavigateUp = null,
-            title = R.string.search_header
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Spacer(modifier = Modifier.height(48.dp))
-            Text(
-                text = stringResource(id = R.string.search_browse_header),
-                modifier = Modifier.padding(horizontal = 16.dp),
-                style = typography.titleLarge
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            BrowseSection(
-                onKanjiCardClick = onKanjiCardClick,
-                onRadicalCardClick = onRadicalCardClick,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-        }
-    }
-}
+    val overviewState by viewModel.overviewState.collectAsStateWithLifecycle()
+    val detailState by viewModel.detailState.collectAsStateWithLifecycle()
+    val query by viewModel.queryState.collectAsStateWithLifecycle()
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun BrowseSection(
-    onKanjiCardClick: () -> Unit,
-    onRadicalCardClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val sections = listOf(
-        BrowseSection.KanjiSection(onKanjiCardClick),
-        BrowseSection.RadicalSection(onRadicalCardClick)
+    Screen(
+        overviewState = overviewState,
+        detailState = detailState,
+        query = query,
+        onEnterQuery = viewModel::onEnterQuery,
+        onSearch = viewModel::search,
+        onItemClick = viewModel::onItemClick,
+        onNavigateUp = onNavigateUp
     )
-
-    val sizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
-    when (sizeClass) {
-        WindowWidthSizeClass.COMPACT -> {
-            Column(
-                modifier = modifier,
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-            ) {
-                sections.forEach { section ->
-                    BrowseCard(browseSection = section)
-                }
-            }
-        }
-
-        else -> {
-            // TODO I don't have to do it like this, right? .. right?
-            val chunkSize = if (sizeClass == WindowWidthSizeClass.MEDIUM) {
-                2
-            } else {
-                3
-            }
-            val chunkedSections = sections.chunked(size = chunkSize)
-
-            Column(
-                modifier = modifier,
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-            ) {
-                chunkedSections.forEach { chunk ->
-                    Row(
-                        modifier = Modifier.height(IntrinsicSize.Min),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        chunk.forEach { section ->
-                            BrowseCard(
-                                browseSection = section,
-                                modifier = Modifier
-                                    .weight(1f, fill = false)
-                                    .fillMaxHeight()
-                            )
-                        }
-
-                        if (chunk.size < chunkSize) {
-                            Spacer(modifier = Modifier.weight(1f, fill = false))
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-private fun BrowseCard(
-    browseSection: BrowseSection,
-    modifier: Modifier = Modifier
+private fun Screen(
+    overviewState: SearchOverviewState,
+    detailState: SearchDetailState,
+    query: String,
+    onEnterQuery: (String) -> Unit,
+    onSearch: (String) -> Unit,
+    onItemClick: (SelectedSearchListItem) -> Unit,
+    onNavigateUp: () -> Unit
 ) {
-    Surface(
-        modifier = modifier,
-        shape = shapes.large,
-        color = colorScheme.surfaceContainer
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        ) {
-            Text(
-                text = stringResource(id = browseSection.header),
-                style = typography.titleMedium
+    val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<SelectedSearchListItem>()
+
+    Column {
+        SearchBar(
+            query = query,
+            onQueryChange = onEnterQuery,
+            onSearch = onSearch,
+            modifier = Modifier
+                .windowInsetsPadding(
+                    insets = WindowInsets.safeDrawing.only(
+                        sides = WindowInsetsSides.Top
+                    )
+                )
+                .padding(
+                    start = 4.dp, end = 4.dp,
+                    top = 4.dp, bottom = 12.dp
+                ),
+            leadingIcon = {
+                IconButton(
+                    onClick = onNavigateUp
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.global_navigate_up_icon_description)
+                    )
+                }
+            },
+            enabled = overviewState.searchEnabled && query.isNotBlank()
+        )
+
+        when (overviewState) {
+            is SearchOverviewState.Empty -> {}
+
+            is SearchOverviewState.Content -> SearchListDetailView(
+                overviewData = overviewState,
+                detailState = detailState,
+                onItemClick = onItemClick,
+                listDetailNavigator = listDetailNavigator
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = stringResource(id = browseSection.description))
-            Spacer(modifier = Modifier.height(20.dp))
-            Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = browseSection.onClick) {
-                Text(text = stringResource(id = browseSection.cta))
-            }
+
+            is SearchOverviewState.Error -> {}
         }
-    }
-}
-
-private sealed interface BrowseSection {
-    val header: Int
-    val description: Int
-    val cta: Int
-    val onClick: () -> Unit
-
-    data class KanjiSection(
-        override val onClick: () -> Unit
-    ) : BrowseSection {
-        override val header: Int
-            @StringRes get() = R.string.search_browse_most_frequent_kanji_header
-        override val description: Int
-            @StringRes get() = R.string.search_browse_most_frequent_kanji_description
-        override val cta: Int
-            @StringRes get() = R.string.search_browse_cta
-    }
-
-    data class RadicalSection(
-        override val onClick: () -> Unit
-    ): BrowseSection {
-        override val header: Int
-            @StringRes get() = R.string.search_browse_radical_header
-        override val description: Int
-            @StringRes get() = R.string.search_browse_radical_description
-        override val cta: Int
-            @StringRes get() = R.string.search_browse_cta
     }
 }
 
 @CompactPreview
 @Composable
-private fun SearchScreen_Preview() = MataneTheme {
-    SearchScreen(
-        onKanjiCardClick = {},
-        onRadicalCardClick = {}
+private fun SearchScreen_Loading_Preview() = MataneTheme {
+    Screen(
+        overviewState = SearchOverviewState.Loading,
+        detailState = SearchDetailState.NoSelection,
+        query = "something",
+        onEnterQuery = {},
+        onSearch = {},
+        onItemClick = {},
+        onNavigateUp = {}
+    )
+}
+
+@CompactPreview
+@Composable
+private fun SearchScreen_Content_Preview() = MataneTheme {
+    Screen(
+        overviewState = SearchOverviewState.Data(
+            items = VocabularyMocks.searchResults
+        ),
+        detailState = SearchDetailState.Data(
+            item = VocabularyMocks.umi
+        ),
+        query = "something",
+        onEnterQuery = {},
+        onSearch = {},
+        onItemClick = {},
+        onNavigateUp = {}
+    )
+}
+
+@CompactPreview
+@Composable
+private fun SearchScreen_Error_Preview() = MataneTheme {
+    Screen(
+        overviewState = SearchOverviewState.Error,
+        detailState = SearchDetailState.Error,
+        query = "something",
+        onEnterQuery = {},
+        onSearch = {},
+        onItemClick = {},
+        onNavigateUp = {}
     )
 }

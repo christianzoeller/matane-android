@@ -1,8 +1,9 @@
 package christianzoeller.matane.data.settings.repository
 
 import android.content.Context
-import android.util.Log
 import christianzoeller.matane.data.settings.model.OssLicenseInfo
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.crashlytics
 import com.mikepenz.aboutlibraries.util.parseData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.toImmutableList
@@ -47,7 +48,7 @@ class OssLicensesRepository @Inject constructor(
                     )
                 }
         } catch (e: Exception) {
-            Log.e("Matane", "Failed to parse OSS license information: $e")
+            Firebase.crashlytics.recordException(e)
             null
         }
 }
