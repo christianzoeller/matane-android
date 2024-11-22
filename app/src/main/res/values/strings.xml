@@ -6,7 +6,7 @@
 	<string name="settings_tab_icon_description">Go to the settings</string>
 	<string name="oss_licenses_detail_license_header">License</string>
 	<string name="oss_licenses_header">Open source libraries</string>
-	<string name="oss_licenses_error_disclaimer">An unexpected error occurred.</string>
+	<string name="global_unexpected_error_disclaimer">An unexpected error occurred.</string>
 	<string name="oss_licenses_list_list_item_icon_description">Go to details about license of %1$s</string>
 	<string name="oss_licenses_detail_empty_disclaimer">Select one of the open source libraries in the list to find out more about it.</string>
 	<string name="global_navigate_up_icon_description">Go back to the previous screen</string>
@@ -15,7 +15,6 @@
 	<string name="global_onyomi">Onyomi</string>
 	<string name="global_kunyomi">Kunyomi</string>
 	<string name="kanji_detail_taught_in_grade">Taught in grade %1$d.</string>
-    <string name="kanji_error_disclaimer">An unexpected error occurred.</string>
 	<string name="kanji_detail_radical_section_header">Parts</string>
 	<string name="kanji_detail_radical_section_info_icon_description">Display information about what these parts are</string>
 	<string name="kanji_detail_radical_section_radical_explanation">The symbols shown here are common parts that can be found in a lot of kanji. These parts are called \"radicals\" and can be thought of as building blocks for kanji. Some radicals are kanji, too, for example 一 or 口.</string>
@@ -59,7 +58,6 @@
 	<string name="radical_list_item_contained_in_kanji">Contained in %1$d kanji</string>
 	<string name="radical_list_item_stroke_count">%1$d strokes</string>
 	<string name="radical_detail_empty_disclaimer">Select one of the radicals in the list to find out more about it.</string>
-	<string name="radical_error_disclaimer">An unexpected error occurred.</string>
 	<string name="radical_detail_contained_in_kanji">This radical is contained in %1$d kanji. You can click on them to find out more about them.</string>
 	<string name="radical_detail_stroke_count">Drawn with %1$d strokes.</string>
 	<string name="radical_header">Radicals</string>
@@ -82,4 +80,8 @@
 	<string name="search_search_button_icon_description">Perform a search using your entered query</string>
 	<string name="search_searchbar_placeholder">Search</string>
 	<string name="search_searchbar_clear_icon_description">Clear your current query</string>
+	<string name="default_error_state_illustration_description">An error occurred</string>
+	<string name="global_error_disclaimer_japanese" translatable="false">悪かったですよ</string>
+	<string name="global_no_selection_disclaimer_japanese" translatable="false">まだ何でもないですよ</string>
+	<string name="default_no_selection_state_illustration_description">Nothing selected yet</string>
 </resources>

@@ -1,22 +1,17 @@
 package christianzoeller.matane.feature.settings.osslicenses
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
 import christianzoeller.matane.feature.settings.osslicenses.ui.OssLicensesListDetailView
+import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -67,22 +62,8 @@ private fun OssLicensesScreen(
                 listDetailNavigator = listDetailNavigator
             )
 
-            OssLicensesOverviewState.Error -> ErrorView()
+            OssLicensesOverviewState.Error -> DefaultErrorState(modifier = Modifier.fillMaxSize())
         }
-    }
-}
-
-@Composable
-private fun ErrorView() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.oss_licenses_error_disclaimer),
-            textAlign = TextAlign.Center,
-            style = typography.titleMedium
-        )
     }
 }
 

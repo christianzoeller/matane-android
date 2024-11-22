@@ -1,6 +1,5 @@
 package christianzoeller.matane.feature.dictionary.radical
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -12,27 +11,22 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
 import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiDetail
-import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiDetailError
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
 import christianzoeller.matane.feature.dictionary.radical.ui.RadicalListDetailView
+import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -79,7 +73,7 @@ fun RadicalScreen(
                             .padding(16.dp)
                     )
                 } else {
-                    KanjiDetailError(modifier = Modifier.padding(16.dp))
+                    DefaultErrorState(modifier = Modifier.padding(16.dp))
                 }
             }
         }
@@ -123,23 +117,8 @@ private fun RadicalScreen(
                 listDetailNavigator = listDetailNavigator
             )
 
-            is RadicalOverviewState.Error -> ErrorView()
+            is RadicalOverviewState.Error -> DefaultErrorState(modifier = Modifier.fillMaxSize())
         }
-    }
-}
-
-@Composable
-private fun ErrorView() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.radical_error_disclaimer),
-            textAlign = TextAlign.Center,
-            style = typography.titleMedium
-        )
-        // TODO add button to trigger a reload
     }
 }
 
