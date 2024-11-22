@@ -17,12 +17,16 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
 import christianzoeller.matane.feature.dictionary.radical.RadicalLiteral
 import christianzoeller.matane.feature.dictionary.radical.RadicalOverviewState
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
+import christianzoeller.matane.styleguide.components.DefaultErrorState
+import christianzoeller.matane.styleguide.components.DefaultNoSelectionState
 import christianzoeller.matane.ui.extensions.scrollToTop
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -70,7 +74,10 @@ fun RadicalListDetailView(
 
             AnimatedPane {
                 when (detailState) {
-                    RadicalDetailState.NoSelection -> RadicalDetailEmpty(contentModifier)
+                    RadicalDetailState.NoSelection -> DefaultNoSelectionState(
+                        message = stringResource(id = R.string.radical_detail_empty_disclaimer),
+                        modifier = contentModifier
+                    )
 
                     is RadicalDetailState.Loading -> RadicalDetail(
                         data = detailState,
@@ -86,7 +93,7 @@ fun RadicalListDetailView(
                         modifier = contentModifier
                     )
 
-                    RadicalDetailState.Error -> RadicalDetailError(contentModifier)
+                    RadicalDetailState.Error -> DefaultErrorState(contentModifier)
                 }
             }
         }

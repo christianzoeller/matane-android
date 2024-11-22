@@ -17,7 +17,9 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.kanji.KanjiDetailState
 import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.feature.dictionary.kanji.KanjiLiteral
@@ -26,6 +28,8 @@ import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMock
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
+import christianzoeller.matane.styleguide.components.DefaultErrorState
+import christianzoeller.matane.styleguide.components.DefaultNoSelectionState
 import christianzoeller.matane.ui.extensions.scrollToTop
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
@@ -75,7 +79,10 @@ fun KanjiListDetailView(
 
             AnimatedPane {
                 when (detailState) {
-                    KanjiDetailState.NoSelection -> KanjiDetailEmpty(contentModifier)
+                    KanjiDetailState.NoSelection -> DefaultNoSelectionState(
+                        message = stringResource(id = R.string.kanji_detail_empty_disclaimer),
+                        modifier = contentModifier
+                    )
 
                     is KanjiDetailState.Loading -> KanjiDetail(
                         data = detailState,
@@ -91,7 +98,7 @@ fun KanjiListDetailView(
                         modifier = contentModifier
                     )
 
-                    KanjiDetailState.Error -> KanjiDetailError(contentModifier)
+                    KanjiDetailState.Error -> DefaultErrorState(contentModifier)
                 }
             }
         }
