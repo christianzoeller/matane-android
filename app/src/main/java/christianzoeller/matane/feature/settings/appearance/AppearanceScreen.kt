@@ -67,7 +67,7 @@ private fun Content(
         modifier = Modifier.padding(vertical = 48.dp)
     ) {
         Text(
-            text = stringResource(R.string.search_appearance_ui_mode_header),
+            text = stringResource(R.string.settings_appearance_ui_mode_header),
             modifier = Modifier.padding(horizontal = 16.dp),
             style = typography.titleLarge
         )
@@ -101,9 +101,9 @@ private fun Content(
 
 private val UiMode.label: Int
     @StringRes get() = when (this) {
-        UiMode.UseLightTheme -> R.string.search_appearance_ui_mode_option_light
-        UiMode.UseDarkTheme -> R.string.search_appearance_ui_mode_option_dark
-        UiMode.UseSystemSettings -> R.string.search_appearance_ui_mode_option_system
+        UiMode.UseLightTheme -> R.string.settings_appearance_ui_mode_option_light
+        UiMode.UseDarkTheme -> R.string.settings_appearance_ui_mode_option_dark
+        UiMode.UseSystemSettings -> R.string.settings_appearance_ui_mode_option_system
     }
 
 @CompactPreview
