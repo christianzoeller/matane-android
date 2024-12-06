@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,8 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.data.settings.model.UiMode
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun AppearanceScreen(
@@ -75,7 +77,9 @@ private fun Content(
 
         UiMode.entries.forEach { uiMode ->
             Surface(
-                onClick = { onUiModeClick(uiMode) }
+                onClick = { onUiModeClick(uiMode) },
+                color = colorScheme.background,
+                contentColor = colorScheme.onBackground
             ) {
                 Row(
                     modifier = Modifier
@@ -86,7 +90,11 @@ private fun Content(
                     RadioButton(
                         selected = uiMode == data.uiMode,
                         onClick = null,
-                        modifier = Modifier.padding(start = 16.dp)
+                        modifier = Modifier.padding(start = 16.dp),
+                        colors = RadioButtonDefaults.colors(
+                            unselectedColor = colorScheme.onBackground,
+                            selectedColor = colorScheme.primary
+                        )
                     )
                     Spacer(modifier = Modifier.width(32.dp))
                     Text(
@@ -108,7 +116,7 @@ private val UiMode.label: Int
 
 @CompactPreview
 @Composable
-private fun AppearanceScreen_Preview() = MataneTheme {
+private fun AppearanceScreen_Preview() = MatanePreview {
     Screen(
         state = AppearanceState(
             uiMode = UiMode.UseSystemSettings

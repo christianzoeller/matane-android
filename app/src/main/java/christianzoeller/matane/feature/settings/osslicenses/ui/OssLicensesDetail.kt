@@ -14,8 +14,8 @@ import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesDetailState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
 import christianzoeller.matane.styleguide.components.TextLink
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.entity.License
 
@@ -125,7 +125,7 @@ private fun LicenseSection(licenses: List<License>) {
 
 @CompactPreview
 @Composable
-private fun OssLicensesDetail_Preview() = MataneTheme {
+private fun OssLicensesDetail_Preview() = MatanePreview {
     OssLicensesDetail(
         data = OssLicensesDetailState.Content(
             library = OssLicenseInfoMocks.library,

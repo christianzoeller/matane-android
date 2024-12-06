@@ -24,8 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun SearchBar(
@@ -92,7 +92,7 @@ fun SearchBar(
 
 @CompactPreview
 @Composable
-private fun SearchBar_Preview() = MataneTheme {
+private fun SearchBar_Preview() = MatanePreview {
     SearchBar(
         query = "something",
         onQueryChange = {},
@@ -103,7 +103,7 @@ private fun SearchBar_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun SearchBar_Placeholder_Preview() = MataneTheme {
+private fun SearchBar_Placeholder_Preview() = MatanePreview {
     SearchBar(
         query = "",
         onQueryChange = {},
@@ -114,7 +114,7 @@ private fun SearchBar_Placeholder_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun SearchBar_WithLeadingIcon_Preview() = MataneTheme {
+private fun SearchBar_WithLeadingIcon_Preview() = MatanePreview {
     SearchBar(
         query = "something",
         onQueryChange = {},

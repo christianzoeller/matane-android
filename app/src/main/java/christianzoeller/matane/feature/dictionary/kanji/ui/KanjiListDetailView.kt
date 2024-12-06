@@ -31,9 +31,9 @@ import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMock
 import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultNoSelectionState
 import christianzoeller.matane.ui.extensions.scrollToTop
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 
 @Composable
@@ -109,7 +109,7 @@ fun KanjiListDetailView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
+private fun KanjiListDetailView_Loading_Preview() = MatanePreview {
     KanjiListDetailView(
         overviewData = KanjiOverviewState.Loading(
             listType = KanjiListType.ByFrequency
@@ -126,7 +126,7 @@ private fun KanjiListDetailView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Content_Preview() = MataneTheme {
+private fun KanjiListDetailView_Content_Preview() = MatanePreview {
     KanjiListDetailView(
         overviewData = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->
@@ -152,7 +152,7 @@ private fun KanjiListDetailView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun KanjiListDetailView_Error_Preview() = MataneTheme {
+private fun KanjiListDetailView_Error_Preview() = MatanePreview {
     KanjiListDetailView(
         overviewData = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->

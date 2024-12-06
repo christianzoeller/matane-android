@@ -1,17 +1,12 @@
 package christianzoeller.matane.feature.dictionary.kanji
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -29,9 +24,10 @@ import christianzoeller.matane.feature.dictionary.kanji.ui.KanjiListDetailView
 import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
 import christianzoeller.matane.feature.dictionary.radical.ui.RadicalDetail
 import christianzoeller.matane.styleguide.components.DefaultErrorState
+import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,15 +51,10 @@ fun KanjiScreen(
 
     when (val radicalState = radicalDetailState) {
         is RadicalDetailState.Content, is RadicalDetailState.Error -> {
-            ModalBottomSheet(
+            DefaultModalBottomSheet(
                 onDismissRequest = viewModel::onDismissRadical,
                 sheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
-                ),
-                modifier = Modifier.windowInsetsPadding(
-                    insets = WindowInsets.safeDrawing.only(
-                        sides = WindowInsetsSides.Top
-                    )
                 )
             ) {
                 if (radicalState is RadicalDetailState.Content) {
@@ -73,6 +64,7 @@ fun KanjiScreen(
                         onKanjiClick = null,
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
+                            .fillMaxWidth()
                             .padding(16.dp)
                     )
                 } else {
@@ -129,7 +121,7 @@ private fun KanjiScreen(
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Loading_Preview() = MataneTheme {
+private fun KanjiScreen_Loading_Preview() = MatanePreview {
     KanjiScreen(
         overviewState = KanjiOverviewState.Loading(
             listType = KanjiListType.ByFrequency
@@ -145,7 +137,7 @@ private fun KanjiScreen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Content_Preview() = MataneTheme {
+private fun KanjiScreen_Content_Preview() = MatanePreview {
     KanjiScreen(
         overviewState = KanjiOverviewState.Data(
             kanjiList = List(10) { index ->
@@ -170,7 +162,7 @@ private fun KanjiScreen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun KanjiScreen_Error_Preview() = MataneTheme {
+private fun KanjiScreen_Error_Preview() = MatanePreview {
     KanjiScreen(
         overviewState = KanjiOverviewState.Error(
             listType = KanjiListType.ByFrequency

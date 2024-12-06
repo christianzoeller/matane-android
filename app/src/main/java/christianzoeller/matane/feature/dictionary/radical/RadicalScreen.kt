@@ -1,17 +1,11 @@
 package christianzoeller.matane.feature.dictionary.radical
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -27,9 +21,10 @@ import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemM
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
 import christianzoeller.matane.feature.dictionary.radical.ui.RadicalListDetailView
 import christianzoeller.matane.styleguide.components.DefaultErrorState
+import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,15 +47,10 @@ fun RadicalScreen(
 
     when (val kanjiState = kanjiDetailState) {
         is KanjiDetailState.Content, is KanjiDetailState.Error -> {
-            ModalBottomSheet(
+            DefaultModalBottomSheet(
                 onDismissRequest = viewModel::onDismissKanji,
                 sheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
-                ),
-                modifier = Modifier.windowInsetsPadding(
-                    insets = WindowInsets.safeDrawing.only(
-                        sides = WindowInsetsSides.Top
-                    )
                 )
             ) {
                 if (kanjiState is KanjiDetailState.Content) {
@@ -124,7 +114,7 @@ private fun RadicalScreen(
 
 @CompactPreview
 @Composable
-private fun RadicalScreen_Loading_Preview() = MataneTheme {
+private fun RadicalScreen_Loading_Preview() = MatanePreview {
     RadicalScreen(
         overviewState = RadicalOverviewState.Loading,
         detailState = RadicalDetailState.NoSelection,
@@ -137,7 +127,7 @@ private fun RadicalScreen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun RadicalScreen_Content_Preview() = MataneTheme {
+private fun RadicalScreen_Content_Preview() = MatanePreview {
     RadicalScreen(
         overviewState = RadicalOverviewState.Data(
             radicals = List(10) { index ->
@@ -159,7 +149,7 @@ private fun RadicalScreen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun RadicalScreen_Error_Preview() = MataneTheme {
+private fun RadicalScreen_Error_Preview() = MatanePreview {
     RadicalScreen(
         overviewState = RadicalOverviewState.Error,
         detailState = RadicalDetailState.Error,

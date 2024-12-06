@@ -12,13 +12,12 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import christianzoeller.matane.R
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,15 +45,16 @@ fun DefaultTopAppBar(
         actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorScheme.surfaceContainer,
-            titleContentColor = contentColorFor(colorScheme.surfaceContainer),
-            navigationIconContentColor = contentColorFor(colorScheme.surfaceContainer)
+            titleContentColor = colorScheme.onSurfaceVariant,
+            navigationIconContentColor = colorScheme.onSurfaceVariant,
+            actionIconContentColor = colorScheme.onSurfaceVariant
         )
     )
 }
 
 @CompactPreview
 @Composable
-private fun DefaultTopAppBar_Preview() = MataneTheme {
+private fun DefaultTopAppBar_Preview() = MatanePreview {
     DefaultTopAppBar(
         onNavigateUp = {},
         title = R.string.oss_licenses_header
@@ -63,7 +63,7 @@ private fun DefaultTopAppBar_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun DefaultTopAppBar_NoNavigationIcon_Preview() = MataneTheme {
+private fun DefaultTopAppBar_NoNavigationIcon_Preview() = MatanePreview {
     DefaultTopAppBar(
         onNavigateUp = null,
         title = R.string.oss_licenses_header
@@ -72,7 +72,7 @@ private fun DefaultTopAppBar_NoNavigationIcon_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun DefaultTopAppBar_WithAction_Preview() = MataneTheme {
+private fun DefaultTopAppBar_WithAction_Preview() = MatanePreview {
     DefaultTopAppBar(
         onNavigateUp = {},
         title = R.string.oss_licenses_header,

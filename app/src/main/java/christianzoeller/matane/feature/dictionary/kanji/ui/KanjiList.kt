@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -38,10 +37,11 @@ import christianzoeller.matane.feature.dictionary.kanji.KanjiLiteral
 import christianzoeller.matane.feature.dictionary.kanji.KanjiOverviewState
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiInContextMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.KanjiListItemModel
+import christianzoeller.matane.styleguide.components.DefaultListItem
 import christianzoeller.matane.styleguide.effects.OnScrollCloseToEndEffect
 import christianzoeller.matane.styleguide.modifiers.placeholder
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -127,7 +127,8 @@ private fun ListHeader(
                 }
             ),
             modifier = Modifier.weight(1f),
-            style = typography.titleLarge
+            style = typography.titleLarge,
+            color = colorScheme.secondary
         )
         IconButton(
             onClick = onInfoClick,
@@ -135,13 +136,15 @@ private fun ListHeader(
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                contentDescription = stringResource(id = R.string.kanji_list_header_info_button_icon_description)
+                contentDescription = stringResource(id = R.string.kanji_list_header_info_button_icon_description),
+                tint = colorScheme.secondary
             )
         }
         IconButton(onClick = onOptionsClick) {
             Icon(
                 imageVector = Icons.Default.Settings, // TODO change
-                contentDescription = stringResource(id = R.string.kanji_list_header_switch_button_icon_description)
+                contentDescription = stringResource(id = R.string.kanji_list_header_switch_button_icon_description),
+                tint = colorScheme.secondary
             )
         }
     }
@@ -155,7 +158,7 @@ private fun KanjiListItem(
     onClick: (KanjiInContext) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ListItem(
+    DefaultListItem(
         headlineContent = {
             Text(
                 text = kanji.meanings,
@@ -193,7 +196,7 @@ private fun KanjiListItem(
                         visible = isLoading,
                         color = colorScheme.primaryContainer
                     ),
-                    color = colorScheme.onPrimaryContainer
+                    color = colorScheme.primary
                 )
             }
         },
@@ -228,19 +231,19 @@ private val KanjiInContext.gradeDisclaimer: Int?
 // region Previews
 @CompactPreview
 @Composable
-private fun KanjiList_Loading_Preview() = MataneTheme {
+private fun KanjiList_Loading_Preview() = MatanePreview {
     KanjiListPreview(isLoading = true)
 }
 
 @CompactPreview
 @Composable
-private fun KanjiList_Content_Preview() = MataneTheme {
+private fun KanjiList_Content_Preview() = MatanePreview {
     KanjiListPreview()
 }
 
 @CompactPreview
 @Composable
-private fun KanjiList_Content_ByGrade_Preview() = MataneTheme {
+private fun KanjiList_Content_ByGrade_Preview() = MatanePreview {
     KanjiListPreview(
         listType = KanjiListType.ByGrade,
         priority = "3"

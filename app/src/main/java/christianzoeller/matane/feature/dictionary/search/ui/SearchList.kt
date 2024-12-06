@@ -9,12 +9,12 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.feature.dictionary.search.SearchOverviewState
 import christianzoeller.matane.feature.dictionary.search.SelectedSearchListItem
 import christianzoeller.matane.feature.dictionary.search.model.VocabularyMocks
 import christianzoeller.matane.styleguide.modifiers.placeholder
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun SearchList(
@@ -65,7 +65,7 @@ fun SearchList(
 
 @CompactPreview
 @Composable
-private fun SearchList_Loading_Preview() = MataneTheme {
+private fun SearchList_Loading_Preview() = MatanePreview {
     SearchList(
         data = SearchOverviewState.Loading,
         listState = rememberLazyListState(),
@@ -75,7 +75,7 @@ private fun SearchList_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun SearchList_Content_Preview() = MataneTheme {
+private fun SearchList_Content_Preview() = MatanePreview {
     SearchList(
         data = SearchOverviewState.Data(
             items = VocabularyMocks.searchResults

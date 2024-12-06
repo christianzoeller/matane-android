@@ -9,8 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import ${PACKAGE_NAME}.ui.${LISTDETAILVIEW}
 
 #parse("File Header.java")
@@ -70,7 +70,7 @@ private fun Screen(
 
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Loading_Preview() = MataneTheme {
+private fun ${NAME}Screen_Loading_Preview() = MatanePreview {
     Screen(
         overviewState = ${OVERVIEWSTATE}.Loading,
         detailState = ${DETAILSTATE}.NoSelection,
@@ -82,7 +82,7 @@ private fun ${NAME}Screen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Content_Preview() = MataneTheme {
+private fun ${NAME}Screen_Content_Preview() = MatanePreview {
     Screen(
         overviewState = ${OVERVIEWSTATE}.Data(
             items = TODO()
@@ -98,7 +98,7 @@ private fun ${NAME}Screen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Error_Preview() = MataneTheme {
+private fun ${NAME}Screen_Error_Preview() = MatanePreview {
     Screen(
         overviewState = ${OVERVIEWSTATE}.Error,
         detailState = ${DETAILSTATE}.Error,

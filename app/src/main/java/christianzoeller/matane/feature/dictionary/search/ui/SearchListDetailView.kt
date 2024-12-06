@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import christianzoeller.matane.ui.extensions.scrollToTop
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MediumPreview
@@ -25,6 +24,7 @@ import christianzoeller.matane.feature.dictionary.search.SearchOverviewState
 import christianzoeller.matane.feature.dictionary.search.SearchDetailState
 import christianzoeller.matane.feature.dictionary.search.SelectedSearchListItem
 import christianzoeller.matane.feature.dictionary.search.model.VocabularyMocks
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun SearchListDetailView(
@@ -85,7 +85,7 @@ fun SearchListDetailView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun SearchListDetailView_Loading_Preview() = MataneTheme {
+private fun SearchListDetailView_Loading_Preview() = MatanePreview {
     SearchListDetailView(
         overviewData = SearchOverviewState.Loading,
         detailState = SearchDetailState.Loading,
@@ -97,7 +97,7 @@ private fun SearchListDetailView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun SearchListDetailView_Content_Preview() = MataneTheme {
+private fun SearchListDetailView_Content_Preview() = MatanePreview {
     SearchListDetailView(
         overviewData = SearchOverviewState.Data(
             items = VocabularyMocks.searchResults
@@ -113,7 +113,7 @@ private fun SearchListDetailView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun SearchListDetailView_Error_Preview() = MataneTheme {
+private fun SearchListDetailView_Error_Preview() = MatanePreview {
     SearchListDetailView(
         overviewData = SearchOverviewState.Data(
             items = VocabularyMocks.searchResults

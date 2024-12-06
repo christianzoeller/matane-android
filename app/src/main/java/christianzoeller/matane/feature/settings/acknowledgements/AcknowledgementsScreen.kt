@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.styleguide.components.TextLink
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun AcknowledgementsScreen(
@@ -82,7 +82,7 @@ private fun Acknowledgement(
 
 @CompactPreview
 @Composable
-private fun AcknowledgementsScreen_Preview() = MataneTheme {
+private fun AcknowledgementsScreen_Preview() = MatanePreview {
     AcknowledgementsScreen(
         onNavigateUp = {}
     )

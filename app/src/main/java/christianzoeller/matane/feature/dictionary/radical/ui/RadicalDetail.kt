@@ -22,8 +22,8 @@ import christianzoeller.matane.data.dictionary.model.KanjiInRadical
 import christianzoeller.matane.feature.dictionary.radical.RadicalDetailState
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
 import christianzoeller.matane.styleguide.modifiers.placeholder
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import kotlin.collections.forEach
 
 @Composable
@@ -40,7 +40,7 @@ fun RadicalDetail(
                 .align(Alignment.CenterHorizontally)
                 .placeholder(visible = isLoading),
             style = typography.displayMedium,
-            color = colorScheme.secondary
+            color = colorScheme.primary
         )
         Spacer(modifier = Modifier.height(48.dp))
         Text(
@@ -101,21 +101,25 @@ private fun KanjiTile(
     onKanjiClick: ((String) -> Unit)?,
     modifier: Modifier = Modifier
 ) {
+    fun tileContent() = @Composable {
+        Text(
+            text = kanji,
+            modifier = Modifier
+                .placeholder(visible = isLoading)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            style = typography.headlineMedium
+        )
+    }
+
     when (onKanjiClick) {
         null -> {
             Surface(
                 modifier = modifier,
                 shape = shapes.medium,
-                color = colorScheme.surfaceContainer
-            ) {
-                Text(
-                    text = kanji,
-                    modifier = Modifier
-                        .placeholder(visible = isLoading)
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    style = typography.headlineMedium
-                )
-            }
+                color = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.primary,
+                content = tileContent()
+            )
         }
 
         else -> {
@@ -124,23 +128,17 @@ private fun KanjiTile(
                 modifier = modifier,
                 enabled = !isLoading,
                 shape = shapes.medium,
-                color = colorScheme.primaryContainer,
-            ) {
-                Text(
-                    text = kanji,
-                    modifier = Modifier
-                        .placeholder(visible = isLoading)
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    style = typography.headlineMedium
-                )
-            }
+                color = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.primary,
+                content = tileContent()
+            )
         }
     }
 }
 
 @CompactPreview
 @Composable
-private fun RadicalDetail_Preview() = MataneTheme {
+private fun RadicalDetail_Preview() = MatanePreview {
     RadicalDetail(
         data = RadicalDetailState.Data(
             radical = RadicalMocks.default
@@ -153,7 +151,7 @@ private fun RadicalDetail_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun RadicalDetail_NotClickable_Preview() = MataneTheme {
+private fun RadicalDetail_NotClickable_Preview() = MatanePreview {
     RadicalDetail(
         data = RadicalDetailState.Data(
             radical = RadicalMocks.default
@@ -166,7 +164,7 @@ private fun RadicalDetail_NotClickable_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun RadicalDetail_Loading_Preview() = MataneTheme {
+private fun RadicalDetail_Loading_Preview() = MatanePreview {
     RadicalDetail(
         data = RadicalDetailState.Data(
             radical = RadicalMocks.default

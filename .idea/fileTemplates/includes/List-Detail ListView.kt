@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import christianzoeller.matane.styleguide.effects.OnScrollCloseToEndEffect
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import ${STATE_PACKAGE_NAME}.${OVERVIEWSTATE}
 import ${STATE_PACKAGE_NAME}.Selected${NAME}ListItem
 
@@ -42,7 +42,7 @@ fun ${LISTVIEW}(
 
 @CompactPreview
 @Composable
-private fun ${LISTVIEW}_Loading_Preview() = MataneTheme {
+private fun ${LISTVIEW}_Loading_Preview() = MatanePreview {
     ${LISTVIEW}(
         data = ${OVERVIEWSTATE}.Loading,
         listState = rememberLazyListState(),
@@ -53,7 +53,7 @@ private fun ${LISTVIEW}_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun ${LISTVIEW}_Content_Preview() = MataneTheme {
+private fun ${LISTVIEW}_Content_Preview() = MatanePreview {
     ${LISTVIEW}(
         data = ${OVERVIEWSTATE}.Data(
             items = TODO()
