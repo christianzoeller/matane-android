@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +27,10 @@ import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KanjiListOptionsSheet(
     onDismissRequest: () -> Unit,
@@ -77,7 +82,11 @@ private fun Content(
             onClick = {
                 onListTypeChange(selectedListType)
                 onClose()
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.secondary,
+                contentColor = colorScheme.onSecondary
+            )
         ) {
             Text(text = stringResource(id = R.string.global_confirm))
         }
@@ -97,21 +106,29 @@ private fun RadioButtonWithText(
     ) {
         RadioButton(
             selected = selected,
-            onClick = onClick
+            onClick = onClick,
+            colors = RadioButtonDefaults.colors(
+                selectedColor = colorScheme.secondary,
+                unselectedColor = colorScheme.onSurface
+            )
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = stringResource(id = text),
             modifier = Modifier
                 .padding(end = 16.dp)
-                .weight(1f)
+                .weight(1f),
+            color = when (selected) {
+                true -> colorScheme.primary
+                else -> colorScheme.onSurface
+            }
         )
     }
 }
 
 @CompactPreview
 @Composable
-private fun KanjiListOptionsSheet_Preview() = MataneTheme {
+private fun KanjiListOptionsSheet_Preview() = MatanePreview {
     Content(
         onClose = {},
         listType = KanjiListType.ByFrequency,

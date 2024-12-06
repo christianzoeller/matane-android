@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import christianzoeller.matane.R
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +75,7 @@ fun HomeScreen(
                 onRadicalCardClick = onRadicalCardClick,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -148,7 +150,8 @@ private fun BrowseCard(
     Surface(
         modifier = modifier,
         shape = shapes.large,
-        color = colorScheme.surfaceContainer
+        color = colorScheme.surfaceVariant,
+        contentColor = colorScheme.onBackground
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -161,7 +164,13 @@ private fun BrowseCard(
             Text(text = stringResource(id = browseSection.description))
             Spacer(modifier = Modifier.height(20.dp))
             Spacer(modifier = Modifier.weight(1f))
-            Button(onClick = browseSection.onClick) {
+            Button(
+                onClick = browseSection.onClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.secondary,
+                    contentColor = colorScheme.onSecondary
+                )
+            ) {
                 Text(text = stringResource(id = browseSection.cta))
             }
         }
@@ -199,7 +208,7 @@ private sealed interface BrowseSection {
 
 @CompactPreview
 @Composable
-private fun HomeScreen_Preview() = MataneTheme {
+private fun HomeScreen_Preview() = MatanePreview {
     HomeScreen(
         onSearch = {},
         onKanjiCardClick = {},

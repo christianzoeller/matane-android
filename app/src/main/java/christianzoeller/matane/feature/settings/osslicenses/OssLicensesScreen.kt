@@ -13,8 +13,8 @@ import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfo
 import christianzoeller.matane.feature.settings.osslicenses.ui.OssLicensesListDetailView
 import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun OssLicensesScreen(
@@ -69,7 +69,7 @@ private fun OssLicensesScreen(
 
 @CompactPreview
 @Composable
-private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
+private fun OssLicensesScreen_Loading_Preview() = MatanePreview {
     OssLicensesScreen(
         overviewState = OssLicensesOverviewState.Loading,
         detailState = OssLicensesDetailState.NoSelection,
@@ -80,7 +80,7 @@ private fun OssLicensesScreen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun OssLicensesScreen_Content_Preview() = MataneTheme {
+private fun OssLicensesScreen_Content_Preview() = MatanePreview {
     OssLicensesScreen(
         overviewState = OssLicensesOverviewState.Data(
             ossLicenseInfo = OssLicenseInfoMocks.info
@@ -96,7 +96,7 @@ private fun OssLicensesScreen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun OssLicensesScreen_Error_Preview() = MataneTheme {
+private fun OssLicensesScreen_Error_Preview() = MatanePreview {
     OssLicensesScreen(
         overviewState = OssLicensesOverviewState.Error,
         detailState = OssLicensesDetailState.Error,

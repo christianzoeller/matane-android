@@ -9,8 +9,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 #end
 import christianzoeller.matane.R
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 #if (${CONTENT})
 import ${PACKAGE_NAME}.ui.${CONTENT}
 #end
@@ -71,7 +71,7 @@ private fun Screen(
 #if (${STATE})
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Loading_Preview() = MataneTheme {
+private fun ${NAME}Screen_Loading_Preview() = MatanePreview {
     Screen(
         state = ${STATE}.Loading,
         onNavigateUp = {}
@@ -80,7 +80,7 @@ private fun ${NAME}Screen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Content_Preview() = MataneTheme {
+private fun ${NAME}Screen_Content_Preview() = MatanePreview {
     Screen(
         state = ${STATE}.Content(
             data = TODO()
@@ -91,7 +91,7 @@ private fun ${NAME}Screen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Error_Preview() = MataneTheme {
+private fun ${NAME}Screen_Error_Preview() = MatanePreview {
     Screen(
         state = ${STATE}.Error,
         onNavigateUp = {}
@@ -100,7 +100,7 @@ private fun ${NAME}Screen_Error_Preview() = MataneTheme {
 #else
 @CompactPreview
 @Composable
-private fun ${NAME}Screen_Preview() = MataneTheme {
+private fun ${NAME}Screen_Preview() = MatanePreview {
     Screen(
         onNavigateUp = {}
     )

@@ -25,6 +25,7 @@ import christianzoeller.matane.feature.dictionary.search.ui.SearchBar
 import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.feature.dictionary.search.ui.SearchListDetailView
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun SearchScreen(
@@ -104,7 +105,7 @@ private fun Screen(
 
 @CompactPreview
 @Composable
-private fun SearchScreen_Loading_Preview() = MataneTheme {
+private fun SearchScreen_Loading_Preview() = MatanePreview {
     Screen(
         overviewState = SearchOverviewState.Loading,
         detailState = SearchDetailState.NoSelection,
@@ -118,7 +119,7 @@ private fun SearchScreen_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun SearchScreen_Content_Preview() = MataneTheme {
+private fun SearchScreen_Content_Preview() = MatanePreview {
     Screen(
         overviewState = SearchOverviewState.Data(
             items = VocabularyMocks.searchResults
@@ -136,7 +137,7 @@ private fun SearchScreen_Content_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun SearchScreen_Error_Preview() = MataneTheme {
+private fun SearchScreen_Error_Preview() = MatanePreview {
     Screen(
         overviewState = SearchOverviewState.Error,
         detailState = SearchDetailState.Error,

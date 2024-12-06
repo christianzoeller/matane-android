@@ -12,10 +12,18 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteColors
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemColors
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.runtime.Composable
@@ -41,6 +49,29 @@ fun MataneApp(
         adaptiveInfo = windowAdaptiveInfo
     )
 
+    val navigationSuiteItemColors = NavigationSuiteItemColors(
+        navigationBarItemColors = NavigationBarItemDefaults.colors(
+            selectedIconColor = colorScheme.onSecondaryContainer,
+            unselectedIconColor = colorScheme.onSurface,
+            selectedTextColor = colorScheme.secondary,
+            unselectedTextColor = colorScheme.onSurface,
+            indicatorColor = colorScheme.secondaryContainer
+        ),
+        navigationRailItemColors = NavigationRailItemDefaults.colors(
+            selectedIconColor = colorScheme.onSecondaryContainer,
+            unselectedIconColor = colorScheme.onSurface,
+            selectedTextColor = colorScheme.secondary,
+            unselectedTextColor = colorScheme.onSurface,
+            indicatorColor = colorScheme.secondaryContainer
+        ),
+        navigationDrawerItemColors = NavigationDrawerItemDefaults.colors(
+            selectedIconColor = colorScheme.onSecondaryContainer,
+            unselectedIconColor = colorScheme.onSurface,
+            selectedTextColor = colorScheme.secondary,
+            unselectedTextColor = colorScheme.onSurface
+        ),
+    )
+
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             appState.topLevelDestinations.forEach {
@@ -53,10 +84,16 @@ fun MataneApp(
                             contentDescription = stringResource(id = it.iconDescription)
                         )
                     },
-                    label = { Text(text = stringResource(id = it.label)) }
+                    label = { Text(text = stringResource(id = it.label)) },
+                    colors = navigationSuiteItemColors
                 )
             }
         },
+        navigationSuiteColors = NavigationSuiteDefaults.colors(
+            navigationBarContainerColor = colorScheme.background,
+            navigationRailContainerColor = colorScheme.background,
+            navigationDrawerContainerColor = colorScheme.background
+        ),
         layoutType = layoutType
     ) {
         Scaffold(

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -39,8 +40,8 @@ import christianzoeller.matane.feature.dictionary.kanji.model.KanjiMocks
 import christianzoeller.matane.feature.dictionary.kanji.model.RadicalInKanjiMocks
 import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
 import christianzoeller.matane.styleguide.modifiers.placeholder
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun KanjiDetail(
@@ -149,7 +150,7 @@ private fun ReadingMeaningGroup(
                     modifier = Modifier
                         .padding(end = 16.dp)
                         .widthIn(min = onyomiLabelMinWidth),
-                    color = colorScheme.outline
+                    color = colorScheme.onSurface
                 )
                 Text(
                     text = it,
@@ -171,7 +172,7 @@ private fun ReadingMeaningGroup(
                                 onyomiLabelMinWidth = it.size.width.toDp()
                             }
                         },
-                    color = colorScheme.outline
+                    color = colorScheme.onSurface
                 )
                 Text(
                     text = it,
@@ -184,7 +185,7 @@ private fun ReadingMeaningGroup(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun RadicalSection(
     radicals: List<RadicalInKanji>,
@@ -199,7 +200,8 @@ private fun RadicalSection(
             Text(
                 text = stringResource(id = R.string.kanji_detail_radical_section_header),
                 modifier = Modifier.weight(1f),
-                style = typography.titleMedium
+                style = typography.titleMedium,
+                color = colorScheme.secondary
             )
             IconButton(
                 onClick = { showInfoSheet = true },
@@ -207,7 +209,8 @@ private fun RadicalSection(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
-                    contentDescription = stringResource(id = R.string.kanji_detail_radical_section_info_icon_description)
+                    contentDescription = stringResource(id = R.string.kanji_detail_radical_section_info_icon_description),
+                    tint = colorScheme.secondary
                 )
             }
         }
@@ -247,21 +250,25 @@ private fun RadicalTile(
     onRadicalClick: ((String) -> Unit)?,
     modifier: Modifier = Modifier
 ) {
+    fun tileContent() = @Composable {
+        Text(
+            text = radical,
+            modifier = Modifier
+                .placeholder(visible = isLoading)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            style = typography.headlineMedium
+        )
+    }
+
     when (onRadicalClick) {
         null -> {
             Surface(
                 modifier = modifier,
                 shape = shapes.medium,
-                color = colorScheme.surfaceContainer
-            ) {
-                Text(
-                    text = radical,
-                    modifier = Modifier
-                        .placeholder(visible = isLoading)
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    style = typography.headlineMedium
-                )
-            }
+                color = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.primary,
+                content = tileContent()
+            )
         }
 
         else -> {
@@ -270,23 +277,17 @@ private fun RadicalTile(
                 modifier = modifier,
                 enabled = !isLoading,
                 shape = shapes.medium,
-                color = colorScheme.primaryContainer,
-            ) {
-                Text(
-                    text = radical,
-                    modifier = Modifier
-                        .placeholder(visible = isLoading)
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    style = typography.headlineMedium
-                )
-            }
+                color = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.primary,
+                content = tileContent()
+            )
         }
     }
 }
 
 @CompactPreview
 @Composable
-private fun KanjiDetail_Preview() = MataneTheme {
+private fun KanjiDetail_Preview() = MatanePreview {
     KanjiDetail(
         data = KanjiDetailState.Data(
             kanji = KanjiMocks.sortOfThing,
@@ -300,7 +301,7 @@ private fun KanjiDetail_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun KanjiDetail_NotClickable_Preview() = MataneTheme {
+private fun KanjiDetail_NotClickable_Preview() = MatanePreview {
     KanjiDetail(
         data = KanjiDetailState.Data(
             kanji = KanjiMocks.sortOfThing,
@@ -314,7 +315,7 @@ private fun KanjiDetail_NotClickable_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun KanjiDetail_Loading_Preview() = MataneTheme {
+private fun KanjiDetail_Loading_Preview() = MatanePreview {
     KanjiDetail(
         data = KanjiDetailState.Data(
             kanji = KanjiMocks.sortOfThing,

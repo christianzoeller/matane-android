@@ -49,8 +49,8 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import kotlin.math.max
 
 /**
@@ -309,7 +309,7 @@ private data class Shimmer(
 
 @CompactPreview
 @Composable
-private fun Placeholder_Preview() = MataneTheme {
+private fun Placeholder_Preview() = MatanePreview {
     Column(
         modifier = Modifier
             .fillMaxSize()

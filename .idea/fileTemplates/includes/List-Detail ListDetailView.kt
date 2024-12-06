@@ -18,9 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import christianzoeller.matane.ui.extensions.scrollToTop
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 import ${STATE_PACKAGE_NAME}.${OVERVIEWSTATE}
 import ${STATE_PACKAGE_NAME}.${DETAILSTATE}
@@ -84,7 +84,7 @@ fun ${LISTDETAILVIEW}(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun ${LISTDETAILVIEW}_Loading_Preview() = MataneTheme {
+private fun ${LISTDETAILVIEW}_Loading_Preview() = MatanePreview {
     ${LISTDETAILVIEW}(
         overviewData = ${OVERVIEWSTATE}.Loading,
         detailState = ${DETAILSTATE}.Loading,
@@ -97,7 +97,7 @@ private fun ${LISTDETAILVIEW}_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun ${LISTDETAILVIEW}_Content_Preview() = MataneTheme {
+private fun ${LISTDETAILVIEW}_Content_Preview() = MatanePreview {
     ${LISTDETAILVIEW}(
         overviewData = ${OVERVIEWSTATE}.Data(
             items = TODO()
@@ -114,7 +114,7 @@ private fun ${LISTDETAILVIEW}_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun ${LISTDETAILVIEW}_Error_Preview() = MataneTheme {
+private fun ${LISTDETAILVIEW}_Error_Preview() = MatanePreview {
     ${LISTDETAILVIEW}(
         overviewData = ${OVERVIEWSTATE}.Data(
             items = TODO()

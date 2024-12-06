@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import com.google.firebase.Firebase
 import com.google.firebase.crashlytics.crashlytics
 
@@ -39,7 +39,7 @@ fun TextLink(
 
 @CompactPreview
 @Composable
-private fun TextLink_Preview() = MataneTheme {
+private fun TextLink_Preview() = MatanePreview {
     TextLink(
         text = "Click on this link",
         url = Uri.EMPTY.toString(),

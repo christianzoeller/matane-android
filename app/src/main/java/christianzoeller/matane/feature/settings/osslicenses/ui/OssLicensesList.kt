@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,9 +16,10 @@ import christianzoeller.matane.R
 import christianzoeller.matane.feature.settings.osslicenses.LibraryOverview
 import christianzoeller.matane.feature.settings.osslicenses.OssLicensesOverviewState
 import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfoMocks
+import christianzoeller.matane.styleguide.components.DefaultListItem
 import christianzoeller.matane.styleguide.modifiers.placeholder
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun OssLicensesList(
@@ -37,7 +37,7 @@ fun OssLicensesList(
             items = data.ossLicenseInfo.libraries,
             key = { it.uniqueId }
         ) { library ->
-            ListItem(
+            DefaultListItem(
                 headlineContent = {
                     Text(
                         text = library.name,
@@ -73,7 +73,7 @@ fun OssLicensesList(
 
 @CompactPreview
 @Composable
-private fun OssLicensesList_Loading_Preview() = MataneTheme {
+private fun OssLicensesList_Loading_Preview() = MatanePreview {
     OssLicensesList(
         data = OssLicensesOverviewState.Data(OssLicenseInfoMocks.info),
         listState = rememberLazyListState(),
@@ -84,7 +84,7 @@ private fun OssLicensesList_Loading_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun OssLicensesList_Content_Preview() = MataneTheme {
+private fun OssLicensesList_Content_Preview() = MatanePreview {
     OssLicensesList(
         data = OssLicensesOverviewState.Data(OssLicenseInfoMocks.info),
         listState = rememberLazyListState(),

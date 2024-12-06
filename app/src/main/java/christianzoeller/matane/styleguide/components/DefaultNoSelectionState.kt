@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @Composable
 fun DefaultNoSelectionState(
@@ -35,7 +35,7 @@ fun DefaultNoSelectionState(
     ) {
         Surface(
             shape = shapes.medium,
-            color = colorScheme.surfaceContainer,
+            color = colorScheme.surfaceVariant,
             contentColor = colorScheme.onSurface
         ) {
             Column(
@@ -48,15 +48,16 @@ fun DefaultNoSelectionState(
                     modifier = Modifier
                         .size(104.dp)
                         .background(
-                            color = colorScheme.onSurface,
+                            color = colorScheme.secondary,
                             shape = CircleShape
                         ),
-                    tint = colorScheme.surfaceContainer
+                    tint = colorScheme.surfaceVariant
                 )
                 Spacer(modifier = Modifier.height(48.dp))
                 Text(
                     text = stringResource(id = R.string.global_no_selection_disclaimer_japanese),
-                    style = typography.titleLarge
+                    style = typography.titleLarge,
+                    color = colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
@@ -71,7 +72,7 @@ fun DefaultNoSelectionState(
 
 @CompactPreview
 @Composable
-private fun DefaultNoSelectionState_Preview() = MataneTheme {
+private fun DefaultNoSelectionState_Preview() = MatanePreview {
     DefaultNoSelectionState(
         message = stringResource(id = R.string.kanji_detail_empty_disclaimer),
         modifier = Modifier.size(400.dp)

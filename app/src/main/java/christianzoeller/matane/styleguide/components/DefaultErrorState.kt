@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 // TODO add a button to trigger a reload
 
@@ -84,6 +84,6 @@ fun DefaultErrorState(
 
 @CompactPreview
 @Composable
-private fun DefaultErrorState_Preview() = MataneTheme {
+private fun DefaultErrorState_Preview() = MatanePreview {
     DefaultErrorState(modifier = Modifier.size(400.dp))
 }

@@ -28,9 +28,9 @@ import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
 import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultNoSelectionState
 import christianzoeller.matane.ui.extensions.scrollToTop
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 
 @Composable
@@ -104,7 +104,7 @@ fun RadicalListDetailView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun RadicalListDetailView_Loading_Preview() = MataneTheme {
+private fun RadicalListDetailView_Loading_Preview() = MatanePreview {
     RadicalListDetailView(
         overviewData = RadicalOverviewState.Loading,
         detailState = RadicalDetailState.Loading,
@@ -118,7 +118,7 @@ private fun RadicalListDetailView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun RadicalListDetailView_Content_Preview() = MataneTheme {
+private fun RadicalListDetailView_Content_Preview() = MatanePreview {
     RadicalListDetailView(
         overviewData = RadicalOverviewState.Data(
             radicals = List(10) { index ->
@@ -141,7 +141,7 @@ private fun RadicalListDetailView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun RadicalListDetailView_Error_Preview() = MataneTheme {
+private fun RadicalListDetailView_Error_Preview() = MatanePreview {
     RadicalListDetailView(
         overviewData = RadicalOverviewState.Data(
             radicals = List(10) { index ->

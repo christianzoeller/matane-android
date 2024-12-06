@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +23,11 @@ import christianzoeller.matane.feature.dictionary.radical.RadicalLiteral
 import christianzoeller.matane.feature.dictionary.radical.RadicalOverviewState
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalListItemModel
 import christianzoeller.matane.feature.dictionary.radical.model.RadicalMocks
+import christianzoeller.matane.styleguide.components.DefaultListItem
 import christianzoeller.matane.styleguide.effects.OnScrollCloseToEndEffect
 import christianzoeller.matane.styleguide.modifiers.placeholder
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -70,7 +70,7 @@ private fun RadicalListItem(
     onClick: (Radical) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ListItem(
+    DefaultListItem(
         headlineContent = {
             Text(
                 text = stringResource(
@@ -98,7 +98,7 @@ private fun RadicalListItem(
                 modifier = Modifier
                     .size(40.dp)
                     .background(
-                        color = colorScheme.secondaryContainer,
+                        color = colorScheme.primaryContainer,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -107,9 +107,9 @@ private fun RadicalListItem(
                     text = radical.literal,
                     modifier = Modifier.placeholder(
                         visible = isLoading,
-                        color = colorScheme.secondaryContainer
+                        color = colorScheme.primaryContainer
                     ),
-                    color = colorScheme.onSecondaryContainer
+                    color = colorScheme.primary
                 )
             }
         }
@@ -119,13 +119,13 @@ private fun RadicalListItem(
 // region Previews
 @CompactPreview
 @Composable
-private fun RadicalList_Loading_Preview() = MataneTheme {
+private fun RadicalList_Loading_Preview() = MatanePreview {
     RadicalListPreview(isLoading = true)
 }
 
 @CompactPreview
 @Composable
-private fun RadicalList_Content_Preview() = MataneTheme {
+private fun RadicalList_Content_Preview() = MatanePreview {
     RadicalListPreview()
 }
 

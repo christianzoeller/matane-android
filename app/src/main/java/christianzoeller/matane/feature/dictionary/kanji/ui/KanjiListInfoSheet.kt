@@ -2,6 +2,7 @@ package christianzoeller.matane.feature.dictionary.kanji.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,9 +11,10 @@ import androidx.compose.ui.unit.dp
 import christianzoeller.matane.R
 import christianzoeller.matane.feature.dictionary.kanji.KanjiListType
 import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KanjiListInfoSheet(
     onDismissRequest: () -> Unit,
@@ -46,7 +48,7 @@ private fun Content(
 
 @CompactPreview
 @Composable
-private fun KanjiListInfoSheet_ByFrequency_Preview() = MataneTheme {
+private fun KanjiListInfoSheet_ByFrequency_Preview() = MatanePreview {
     Content(
         listType = KanjiListType.ByFrequency,
         modifier = Modifier.padding(16.dp)
@@ -55,7 +57,7 @@ private fun KanjiListInfoSheet_ByFrequency_Preview() = MataneTheme {
 
 @CompactPreview
 @Composable
-private fun KanjiListInfoSheet_ByGrade_Preview() = MataneTheme {
+private fun KanjiListInfoSheet_ByGrade_Preview() = MatanePreview {
     Content(
         listType = KanjiListType.ByGrade,
         modifier = Modifier.padding(16.dp)

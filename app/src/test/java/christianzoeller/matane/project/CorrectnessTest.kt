@@ -19,6 +19,16 @@ class CorrectnessTest {
             .assertTrue { function -> function.hasPrivateModifier }
     }
 
+    @Test
+    fun `preview composables make use of MatanePreview`() {
+        Konsist.defaultScope()
+            .previewComposableFunctions()
+            .assertTrue { function ->
+                function.text.contains("MatanePreview") &&
+                        !function.text.contains("MataneTheme")
+            }
+    }
+
     /**
      * List-detail views have to handle back navigation in a special way. For that,
      * a [ThreePaneScaffoldNavigator] is necessary. If the list-detail view creates

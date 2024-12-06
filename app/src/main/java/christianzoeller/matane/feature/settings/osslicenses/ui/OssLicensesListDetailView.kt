@@ -27,9 +27,9 @@ import christianzoeller.matane.feature.settings.osslicenses.model.OssLicenseInfo
 import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultNoSelectionState
 import christianzoeller.matane.ui.extensions.scrollToTop
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
 
 @Composable
@@ -92,7 +92,7 @@ fun OssLicensesListDetailView(
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
+private fun OssLicensesListDetailView_Loading_Preview() = MatanePreview {
     OssLicensesListDetailView(
         overviewData = OssLicensesOverviewState.Loading,
         detailState = OssLicensesDetailState.NoSelection,
@@ -104,7 +104,7 @@ private fun OssLicensesListDetailView_Loading_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
+private fun OssLicensesListDetailView_Content_Preview() = MatanePreview {
     OssLicensesListDetailView(
         overviewData = OssLicensesOverviewState.Data(
             ossLicenseInfo = OssLicenseInfoMocks.info
@@ -121,7 +121,7 @@ private fun OssLicensesListDetailView_Content_Preview() = MataneTheme {
 @MediumPreview
 @CompactPreview
 @Composable
-private fun OssLicensesListDetailView_Error_Preview() = MataneTheme {
+private fun OssLicensesListDetailView_Error_Preview() = MatanePreview {
     OssLicensesListDetailView(
         overviewData = OssLicensesOverviewState.Data(
             ossLicenseInfo = OssLicenseInfoMocks.info

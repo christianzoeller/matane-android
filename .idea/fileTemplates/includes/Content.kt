@@ -2,8 +2,8 @@
 
 #end
 import androidx.compose.runtime.Composable
-import christianzoeller.matane.ui.theme.MataneTheme
 import christianzoeller.matane.ui.tooling.CompactPreview
+import christianzoeller.matane.ui.tooling.MatanePreview
 #if (${STATE})
 import ${STATE_PACKAGE_NAME}.${STATE}
 #end
@@ -22,7 +22,7 @@ fun ${CONTENT}(
 
 @CompactPreview
 @Composable
-private fun ${CONTENT}_Preview() = MataneTheme {
+private fun ${CONTENT}_Preview() = MatanePreview {
     ${CONTENT}(
         #if (${STATE})
         data = ${STATE}.Content(
