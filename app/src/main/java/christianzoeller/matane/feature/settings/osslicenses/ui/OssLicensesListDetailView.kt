@@ -31,6 +31,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun OssLicensesListDetailView(
@@ -39,13 +40,16 @@ fun OssLicensesListDetailView(
     onLibraryClick: (LibraryOverview) -> Unit,
     listDetailNavigator: ThreePaneScaffoldNavigator<LibraryOverview> = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     BackHandler(listDetailNavigator.canNavigateBack()) {
-        listDetailNavigator.navigateBack()
+        coroutineScope.launch {
+            listDetailNavigator.navigateBack()
+        }
     }
 
     val listState = rememberLazyListState()
     val detailScrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -56,9 +60,11 @@ fun OssLicensesListDetailView(
                     listState = listState,
                     isLoading = overviewData is OssLicensesOverviewState.Loading,
                     onLibraryClick = { library ->
-                        onLibraryClick(library)
-                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
-                        detailScrollState.scrollToTop(coroutineScope)
+                        coroutineScope.launch {
+                            onLibraryClick(library)
+                            listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, library)
+                            detailScrollState.scrollToTop(coroutineScope)
+                        }
                     }
                 )
             }

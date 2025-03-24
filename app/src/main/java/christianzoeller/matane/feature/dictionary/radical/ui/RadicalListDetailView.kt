@@ -32,6 +32,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun RadicalListDetailView(
@@ -42,13 +43,16 @@ fun RadicalListDetailView(
     onKanjiClick: (String) -> Unit,
     listDetailNavigator: ThreePaneScaffoldNavigator<RadicalLiteral> = rememberListDetailPaneScaffoldNavigator<RadicalLiteral>()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     BackHandler(listDetailNavigator.canNavigateBack()) {
-        listDetailNavigator.navigateBack()
+        coroutineScope.launch {
+            listDetailNavigator.navigateBack()
+        }
     }
 
     val listState = rememberLazyListState()
     val detailScrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -58,9 +62,11 @@ fun RadicalListDetailView(
                     data = overviewData,
                     listState = listState,
                     onRadicalClick = { radical ->
-                        onRadicalClick(radical)
-                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, radical)
-                        detailScrollState.scrollToTop(coroutineScope)
+                        coroutineScope.launch {
+                            onRadicalClick(radical)
+                            listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, radical)
+                            detailScrollState.scrollToTop(coroutineScope)
+                        }
                     },
                     onLoadMore = onLoadMore
                 )

@@ -25,6 +25,7 @@ import christianzoeller.matane.feature.dictionary.search.SearchDetailState
 import christianzoeller.matane.feature.dictionary.search.SelectedSearchListItem
 import christianzoeller.matane.feature.dictionary.search.model.VocabularyMocks
 import christianzoeller.matane.ui.tooling.MatanePreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchListDetailView(
@@ -33,13 +34,16 @@ fun SearchListDetailView(
     onItemClick: (SelectedSearchListItem) -> Unit,
     listDetailNavigator: ThreePaneScaffoldNavigator<SelectedSearchListItem> = rememberListDetailPaneScaffoldNavigator<SelectedSearchListItem>()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     BackHandler(listDetailNavigator.canNavigateBack()) {
-        listDetailNavigator.navigateBack()
+        coroutineScope.launch {
+            listDetailNavigator.navigateBack()
+        }
     }
 
     val listState = rememberLazyListState()
     val detailScrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
 
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
@@ -50,9 +54,11 @@ fun SearchListDetailView(
                     data = overviewData,
                     listState = listState,
                     onItemClick = { item ->
-                        onItemClick(item)
-                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, item)
-                        detailScrollState.scrollToTop(coroutineScope)
+                        coroutineScope.launch {
+                            onItemClick(item)
+                            listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, item)
+                            detailScrollState.scrollToTop(coroutineScope)
+                        }
                     }
                 )
             }

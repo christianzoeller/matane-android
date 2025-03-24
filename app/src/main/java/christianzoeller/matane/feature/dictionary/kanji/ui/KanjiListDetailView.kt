@@ -35,6 +35,7 @@ import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.ExpandedPreview
 import christianzoeller.matane.ui.tooling.MatanePreview
 import christianzoeller.matane.ui.tooling.MediumPreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun KanjiListDetailView(
@@ -46,13 +47,16 @@ fun KanjiListDetailView(
     onRadicalClick: (String) -> Unit,
     listDetailNavigator: ThreePaneScaffoldNavigator<KanjiLiteral> = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     BackHandler(listDetailNavigator.canNavigateBack()) {
-        listDetailNavigator.navigateBack()
+        coroutineScope.launch {
+            listDetailNavigator.navigateBack()
+        }
     }
 
     val listState = rememberLazyListState()
     val detailScrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = listDetailNavigator.scaffoldDirective,
         value = listDetailNavigator.scaffoldValue,
@@ -63,9 +67,11 @@ fun KanjiListDetailView(
                     listState = listState,
                     onListTypeChange = onListTypeChange,
                     onKanjiClick = { kanji ->
-                        onKanjiClick(kanji)
-                        listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, kanji)
-                        detailScrollState.scrollToTop(coroutineScope)
+                        coroutineScope.launch {
+                            onKanjiClick(kanji)
+                            listDetailNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, kanji)
+                            detailScrollState.scrollToTop(coroutineScope)
+                        }
                     },
                     onLoadMore = onLoadMore
                 )

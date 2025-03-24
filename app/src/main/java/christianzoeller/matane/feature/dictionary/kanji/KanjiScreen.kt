@@ -12,6 +12,7 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +29,7 @@ import christianzoeller.matane.styleguide.components.DefaultModalBottomSheet
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.MatanePreview
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,13 +90,16 @@ private fun KanjiScreen(
     onRadicalClick: (String) -> Unit,
     onNavigateUp: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<KanjiLiteral>()
 
     Column {
         DefaultTopAppBar(
             onNavigateUp = {
                 if (listDetailNavigator.canNavigateBack()) {
-                    listDetailNavigator.navigateBack()
+                    coroutineScope.launch {
+                        listDetailNavigator.navigateBack()
+                    }
                 } else {
                     onNavigateUp()
 

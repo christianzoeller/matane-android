@@ -6,6 +6,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import christianzoeller.matane.R
@@ -15,6 +16,7 @@ import christianzoeller.matane.styleguide.components.DefaultErrorState
 import christianzoeller.matane.styleguide.components.DefaultTopAppBar
 import christianzoeller.matane.ui.tooling.CompactPreview
 import christianzoeller.matane.ui.tooling.MatanePreview
+import kotlinx.coroutines.launch
 
 @Composable
 fun OssLicensesScreen(
@@ -40,13 +42,16 @@ private fun OssLicensesScreen(
     onLibraryClick: (LibraryOverview) -> Unit,
     onNavigateUp: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val listDetailNavigator = rememberListDetailPaneScaffoldNavigator<LibraryOverview>()
 
     Column {
         DefaultTopAppBar(
             onNavigateUp = {
                 if (listDetailNavigator.canNavigateBack()) {
-                    listDetailNavigator.navigateBack()
+                    coroutineScope.launch {
+                        listDetailNavigator.navigateBack()
+                    }
                 } else {
                     onNavigateUp()
                 }
